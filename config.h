@@ -53,7 +53,7 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "Web", "Pdf", "Code", "Etc", "VM", "Editing", "Monitor", "Jack", "Wrld" };
+static const char *tags[] = { "Web", "Pdf", "Code", "Etc", "Org", "Editing", "Monitor", "Jack", "Wrld" };
 
 static const Rule rules[] = {
 	/* xprop(1):
