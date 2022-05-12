@@ -80,10 +80,10 @@ static const Rule rules[] = {
 	{ NULL,	     			NULL,						"pulsemixer",	    0,            			1,           1,         0,        -1},
 	{ NULL,	     			"brave-browser",			NULL,				1,            			0,           1,         0,        -1},
 	{ NULL,      			"spterm",    				NULL,       	    SPTAG(0),     			1,           1,         0,        -1},
-	{ NULL,      			"spsignal",  				NULL,       	    1 << 8 | SPTAG(1),		0,           1,         0,        -1},
-	{ NULL,      			"sptele",    				NULL,       	    1 << 8 | SPTAG(2),     	0,           1,         0,        -1},
-	{ NULL,      			"spviber",   				NULL,       	    1 << 8 | SPTAG(3),     	0,           1,         0,        -1},
-	{ NULL,      			"spmess",   				NULL,       	    1 << 8 | SPTAG(5),     	0,           1,         0,        -1},
+	{ NULL,      			"spsignal",  				NULL,       	    1 << 8 | SPTAG(1),		1,           1,         0,        -1},
+	{ NULL,      			"sptele",    				NULL,       	    1 << 8 | SPTAG(2),     	1,           1,         0,        -1},
+	{ NULL,      			"spviber",   				NULL,       	    1 << 8 | SPTAG(3),     	1,           1,         0,        -1},
+	{ NULL,      			"spmess",   				NULL,       	    1 << 8 | SPTAG(5),     	1,           1,         0,        -1},
 	{ NULL,      			"spcalc",    				NULL,       	    SPTAG(4),				1,           1,         0,        -1},
 };
 
