@@ -36,7 +36,7 @@ const char *name;
 const void *cmd;
 } Sp;
 const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "140x33", NULL };
-const char *spcmd2[] = {TERMINAL, "-n", "spsignal", "-g", "100x20",  "-e", "signal-desktop",NULL };
+const char *spcmd2[] = {TERMINAL, "-n", "spsignal", "-g", "100x30",  "-e", "signal-desktop",NULL };
 const char *spcmd3[] = {TERMINAL, "-n", "sptele", "-g", "80x30", "-e", "telegram-desktop", NULL };
 const char *spcmd4[] = {TERMINAL, "-n", "spviber", "-g", "80x30", "-e", "viber", NULL };
 const char *spcmd5[] = {TERMINAL, "-n", "spcalc", "-g", "40x10", "-e", "bc", "-lq", NULL };
