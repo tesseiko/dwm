@@ -1608,6 +1608,7 @@ void
 runAutostart(void) {
 	// TODO maybe fix the line below for dwmblocks startup-crash
 	// system("killall -q dwmblocks; dwmblocks &");
+	system("/usr/bin/conky &");
 }
 
 void

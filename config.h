@@ -18,7 +18,7 @@ static int smartgaps          = 0;        /* 1 means no outer gap when there is 
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 //static char *fonts[]          = { "monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true"  };
-static char *fonts[]          = { "monospace:size=12", "icomoon:pixelsize=16:style=Regular"};
+static char *fonts[]          = { "monospace:size=11", "icomoon:pixelsize=14:style=Regular"};
 static char normbgcolor[]           = "#040200";
 static char normbordercolor[]       = "#ffb55d";
 static char normfgcolor[]           = "#deaf76";
