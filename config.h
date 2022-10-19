@@ -4,6 +4,8 @@
 #define TERMINAL "st"
 #define DWMMODE "/home/lef/.local/bin/dwmmode/"
 #define TERMCLASS "St"
+#define BACKRES "xrandr  | grep '*' -B1 | grep -v '*' | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
+#define FORWRES "xrandr  | grep '*' -A1 | grep -v '*' | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
 
 /* appearance */
 static unsigned int borderpx  = 0;        /* border pixel of windows */
@@ -181,8 +183,10 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_0,				tag,		{.ui = ~0 } },
 	{ MODKEY,				XK_minus,			spawn,		SHCMD("pamixer -d 1; kill -44 $(pidof dwmblocks)") },
 	{ MODKEY|ShiftMask,		XK_minus,			spawn,		SHCMD("pamixer -d 5; kill -44 $(pidof dwmblocks)") },
+	{ MODKEY|ControlMask,	XK_minus,			spawn,		SHCMD(BACKRES) },
 	{ MODKEY,				XK_equal,			spawn,		SHCMD("pamixer -i 1; kill -44 $(pidof dwmblocks)") },
 	{ MODKEY|ShiftMask,		XK_equal,			spawn,		SHCMD("pamixer -i 5; kill -44 $(pidof dwmblocks)") },
+	{ MODKEY|ControlMask,	XK_equal,			spawn,		SHCMD(FORWRES) },
 	{ MODKEY,				XK_BackSpace,		spawn,		SHCMD("sysact") },
 	{ MODKEY|ShiftMask,		XK_BackSpace,		spawn,		SHCMD("sysact") },
 
