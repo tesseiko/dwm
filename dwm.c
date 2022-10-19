@@ -1609,6 +1609,7 @@ runAutostart(void) {
 	// TODO maybe fix the line below for dwmblocks startup-crash
 	// system("killall -q dwmblocks; dwmblocks &");
 	system("/usr/bin/conky &");
+	system("/usr/bin/wmname LG3D || notify-send 'JavaRuntime' 'wmname app not installed'");
 }
 
 void
