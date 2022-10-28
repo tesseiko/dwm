@@ -6,6 +6,7 @@
 #define TERMCLASS "St"
 #define BACKRES "xrandr  | grep '*' -B1 | grep -v '*' | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
 #define FORWRES "xrandr  | grep '*' -A1 | grep -v '*' | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
+#define SELRES "xrandr  | dmenu | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
 
 /* appearance */
 static unsigned int borderpx  = 0;        /* border pixel of windows */
@@ -228,6 +229,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_s,				spawn,		SHCMD("dmenuvimsessions") },
 	{ MODKEY,				XK_d,				spawn,          SHCMD("rofirun") },
 	{ MODKEY|ShiftMask,		XK_d,				spawn,		SHCMD("dmenu_dragon") },
+	{ MODKEY|ControlMask,	XK_d,				spawn,		SHCMD(SELRES) },
 	{ MODKEY,				XK_f,				togglefullscr,	{0} },
 	{ MODKEY|ShiftMask,		XK_f,				setlayout,	{.v = &layouts[8]} },
 	// { MODKEY,				XK_g,				shiftview,	{ .i = -1 } },
