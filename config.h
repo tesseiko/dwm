@@ -77,7 +77,7 @@ static const Rule rules[] = {
 	{ "Trello",	NULL,		  				NULL,				1 << 4,       			0,           0,         0,        -1},
 	{ "Zathura",			NULL,		  				NULL,				1 << 1,       			0,           0,         0,        -1},
 	{ "Slack",	 			NULL,		  				NULL,  				1 << 8,       			0,           0,         0,        -1},
-	{ "discord", 			NULL,						NULL,  				1 << 8,       			0,           0,         0,        -1},
+	{ "discord", 			NULL,						NULL,  				1 << 7,       			0,           0,         0,        -1},
 	{ "zoom",	 			NULL,						NULL,  				1 << 8,       			0,           0,         0,        -1},
 	{ NULL,		 			"jitsi meet",				NULL,				1 << 8,       			1,           1,         0,        -1},
 	{ NULL,	     			NULL,						"pulsemixer",	    0,            			1,           1,         0,        -1},
