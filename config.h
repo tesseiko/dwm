@@ -78,7 +78,7 @@ static const Rule rules[] = {
 	// { NULL, 	 			NULL,  	  					"abd",				1 << 2,       			0,           1,         0,        -1},
 	{ "Steam",	 			NULL,						NULL,				1 << 4,       			0,           0,         0,        -1},
 	{ "VirtualBox Manager",	NULL,		  				NULL,				1 << 4,       			0,           0,         0,        -1},
-	{ "Trello",	            NULL,		  				NULL,				1 << 4,       			0,           0,         0,        -1},
+	{ "trello-nativefier-a9fb22",NULL,		  				NULL,				1 << 4,       			0,           0,         0,        -1},
 	{ "Zathura",			NULL,		  				NULL,				1 << 1,       			0,           0,         0,        -1},
 	{ "GitAhead",			NULL,		  				NULL,				1 << 3,       			0,           0,         0,        -1},
 	{ "Slack",	 			NULL,		  				NULL,  				1 << 8,       			0,           0,         0,        -1},
