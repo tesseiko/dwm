@@ -73,6 +73,7 @@ static const Rule rules[] = {
 	{ TERMCLASS, 			NULL,						NULL,       	    0,            			0,           1,         0,        -1},
 	{ NULL,      			NULL,       				"Event Tester",		0,            			0,           0,         1,        -1},
 	{ NULL,		 			"ncmpcpp",	  				NULL,       	    0,            			1,           1,         0,        -1},
+	{ NULL,		 			"megasync",	  				NULL,       	    0,            			1,           0,         0,        -1},
 	{ NULL,		 			"qjackctl",  				NULL,       	    1 << 7,       			0,           0,         0,        -1},
 	{ NULL, 	 			NULL,						"EVALUATION",		1 << 5,       			1,           0,         0,        -1},
 	// { NULL, 	 			NULL,  	  					"abd",				1 << 2,       			0,           1,         0,        -1},
