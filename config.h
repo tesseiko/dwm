@@ -22,7 +22,7 @@ static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows sel
 static const unsigned int systrayonleft = 0;   	/* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const int showsystray        = 1;     /* 0 means no systray */
+static const int showsystray        = 0;     /* 0 means no systray */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 //static char *fonts[]          = { "monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true"  };
@@ -74,6 +74,7 @@ static const Rule rules[] = {
 	{ NULL,      			NULL,       				"Event Tester",		0,            			0,           0,         1,        -1},
 	{ NULL,		 			"ncmpcpp",	  				NULL,       	    0,            			1,           1,         0,        -1},
 	{ NULL,		 			"megasync",	  				NULL,       	    0,            			1,           0,         0,        -1},
+	{ NULL,		 			"cairo-dock",	  			NULL,       	    0x0ff,         			1,           0,         0,        -1},
 	{ NULL,		 			"qjackctl",  				NULL,       	    1 << 7,       			0,           0,         0,        -1},
 	{ NULL, 	 			NULL,						"EVALUATION",		1 << 5,       			1,           0,         0,        -1},
 	// { NULL, 	 			NULL,  	  					"abd",				1 << 2,       			0,           1,         0,        -1},
@@ -201,7 +202,6 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_Tab,				spawn,		SHCMD("change_mode") },
 	{ MODKEY,				XK_q,				spawn,		SHCMD(DWMMODE "q") },
 	{ MODKEY|ShiftMask,		XK_q,				killclient,	{0} },
-	{ MODKEY|ControlMask,	XK_q,				spawn,		SHCMD("sysact") },
 	{ MODKEY,				XK_w,				spawn,		SHCMD(DWMMODE "w") },
 	{ MODKEY|ShiftMask,		XK_w,				spawn,		SHCMD("$BROWSER") },
 	{ MODKEY|ControlMask,	XK_w,				spawn,		SHCMD(TERMINAL " -e sudo nmtui") },
