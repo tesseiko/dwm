@@ -1,5 +1,9 @@
 /* See LICENSE file for copyright and license details. */
+#ifndef CONFIG_H
+#define CONFIG_H
 
+
+#include "headers/dwm.h"
 /* Constants */
 #define TERMINAL "st"
 #define DWMMODE "/home/lef/.local/bin/dwmmode/"
@@ -12,12 +16,7 @@
 static unsigned int borderpx  = 0;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int cornerrad = 8;
-static unsigned int gappih    = 20;       /* horiz inner gap between windows */
-static unsigned int gappiv    = 10;       /* vert inner gap between windows */
-static unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static unsigned int gappov    = 30;       /* vert outer gap between windows and screen edge */
 static int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
-static int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 //static char *fonts[]          = { "monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true"  };
@@ -65,14 +64,15 @@ static const Rule rules[] = {
 	*/
 	/* class				instance					title				tags mask		isfloating   issticky   isterminal  noswallow  monitor */
 	{ "Gimp",				NULL,						NULL,       	    1 << 8,					0,           0,         0,         0,        -1},
-	{ TERMCLASS, 			NULL,						NULL,       	    0,            			0,           1,         1,         0,        -1},
+	{ TERMCLASS, 			NULL,						NULL,       	    0,            			0,           0,         1,         0,        -1},
 	{ NULL,      			NULL,       				"Event Tester",		0,            			0,           0,         0,         1,        -1},
-	{ NULL,		 			"ncmpcpp",	  				NULL,       	    0,            			1,           1,         1,         0,        -1},
+    { NULL,		 			"stalonetray",	  			NULL,       	    SYSTRAYTAG,			    1,           1,         0,         0,        -1},
+    { NULL,		 			"cairo-dock",	  			NULL,       	    0,         			    1,           1,         0,         0,        -1},
+	{ NULL,		 			"ncmpcpp",	  				NULL,       	    0,            			1,           0,         1,         0,        -1},
 	{ NULL,		 			"megasync",	  				NULL,       	    0,            			1,           0,         0,         0,        -1},
-	{ NULL,		 			"cairo-dock",	  			NULL,       	    0,         			    1,           1,         0,         0,        -1},
 	{ NULL,		 			"qjackctl",  				NULL,       	    1 << 7,       			0,           0,         0,         0,        -1},
 	{ NULL, 	 			NULL,						"EVALUATION",		1 << 5,       			1,           0,         0,         0,        -1},
-	// { NULL, 	 			NULL,  	  					"abd",				1 << 2,       			0,           1,         1,         0,        -1},
+	// { NULL, 	 			NULL,  	  					"abd",				1 << 2,       			0,           0,         1,         0,        -1},
 	{ "Steam",	 			NULL,						NULL,				1 << 4,       			0,           0,         0,         0,        -1},
 	{ "VirtualBox Manager",	NULL,		  				NULL,				1 << 4,       			0,           0,         0,         0,        -1},
 	{ "trello-nativefier-a9fb22",NULL,		  				NULL,				1 << 4,    			0,           0,         0,         0,        -1},
@@ -81,15 +81,15 @@ static const Rule rules[] = {
 	{ "Slack",	 			NULL,		  				NULL,  				1 << 8,       			0,           0,         0,         0,        -1},
 	{ "discord", 			NULL,						NULL,  				1 << 7,       			0,           0,         0,         0,        -1},
 	{ "zoom",	 			NULL,						NULL,  				1 << 8,       			0,           0,         0,         0,        -1},
-	{ NULL,		 			"jitsi meet",				NULL,				1 << 8,       			1,           1,         1,         0,        -1},
-	{ NULL,	     			NULL,						"pulsemixer",	    0,            			1,           1,         1,         0,        -1},
-	{ NULL,	     			"brave-browser",			NULL,				1,            			0,           1,         1,         0,        -1},
-	{ NULL,      			"spterm",    				NULL,       	    SPTAG(0),     			1,           1,         1,         0,        -1},
-	{ NULL,      			"spsignal",  				NULL,       	    1 << 8 | SPTAG(1),		1,           1,         1,         0,        -1},
-	{ NULL,      			"sptele",    				NULL,       	    1 << 8 | SPTAG(2),     	1,           1,         1,         0,        -1},
-	{ NULL,      			"spviber",   				NULL,       	    1 << 8 | SPTAG(3),     	1,           1,         1,         0,        -1},
-	{ NULL,      			"spmess",   				NULL,       	    1 << 8 | SPTAG(5),     	1,           1,         1,         0,        -1},
-	{ NULL,      			"spcalc",    				NULL,       	    SPTAG(4),				1,           1,         1,         0,        -1},
+	{ NULL,		 			"jitsi meet",				NULL,				1 << 8,       			1,           0,         1,         0,        -1},
+	{ NULL,	     			NULL,						"pulsemixer",	    0,            			1,           0,         1,         0,        -1},
+	{ NULL,	     			"brave-browser",			NULL,				1,            			0,           0,         1,         0,        -1},
+	{ NULL,      			"spterm",    				NULL,       	    SPTAG(0),     			1,           0,         1,         0,        -1},
+	{ NULL,      			"spsignal",  				NULL,       	    1 << 8 | SPTAG(1),		1,           0,         1,         0,        -1},
+	{ NULL,      			"sptele",    				NULL,       	    1 << 8 | SPTAG(2),     	1,           0,         1,         0,        -1},
+	{ NULL,      			"spviber",   				NULL,       	    1 << 8 | SPTAG(3),     	1,           0,         1,         0,        -1},
+	{ NULL,      			"spmess",   				NULL,       	    1 << 8 | SPTAG(5),     	1,           0,         1,         0,        -1},
+	{ NULL,      			"spcalc",    				NULL,       	    SPTAG(4),				1,           0,         1,         0,        -1},
 };
 
 /* layout(s) */
@@ -368,8 +368,10 @@ static Button buttons[] = {
 #endif
 	{ ClkStatusText,        ShiftMask,      Button3,        spawn,          SHCMD(TERMINAL " -e vim ~/.local/src/dwmblocks/config.h") },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+	{ ClkClientWin,         0,              8,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        defaultgaps,	{0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+	{ ClkClientWin,         0,              9,        resizemouse,    {0} },
 	{ ClkClientWin,		MODKEY,		Button4,	incrgaps,	{.i = +1} },
 	{ ClkClientWin,		MODKEY,		Button5,	incrgaps,	{.i = -1} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
@@ -380,4 +382,5 @@ static Button buttons[] = {
 	{ ClkTagBar,		0,		Button5,	shiftview,	{.i = 1} },
 	{ ClkRootWin,		0,		Button2,	togglebar,	{0} },
 };
+#endif /* ifndef DEBUG */
 

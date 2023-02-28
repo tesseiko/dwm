@@ -1,3 +1,6 @@
+#include "headers/dwm.h"
+#include "headers/util.h"
+#include <stdio.h>
 /* Key binding functions */
 static void defaultgaps(const Arg *arg);
 static void incrgaps(const Arg *arg);
