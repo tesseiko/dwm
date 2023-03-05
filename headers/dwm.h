@@ -88,6 +88,7 @@ unsigned int gappov    = 30;       /* vert outer gap between windows and screen 
 // for config
 #include <X11/keysym.h>
 #define SYSTRAYTAG              1 << 18
+#define DOCKTAG                 1 << 19
 
 #define LENGTH(X)               (sizeof X / sizeof X[0])
 

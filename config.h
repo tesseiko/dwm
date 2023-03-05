@@ -44,7 +44,7 @@ const char *spcmd4[] = {TERMINAL, "-n", "spviber", "-g", "80x30", "-e", "viber",
 const char *spcmd5[] = {TERMINAL, "-n", "spcalc", "-g", "40x10", "-e", "bc", "-lq", NULL };
 const char *spcmd6[] = {TERMINAL, "-n", "spmess", "-g", "110x30", "-e", "messenger", NULL };
 
-static Sp scratchpads[] = {
+Sp scratchpads[] = {
 /* name          cmd  */
 {"spterm",      spcmd1},
 {"spsignal",    spcmd2},
@@ -55,7 +55,7 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -66,8 +66,8 @@ static const Rule rules[] = {
 	{ "Gimp",				NULL,						NULL,       	    1 << 8,					0,           0,         0,         0,        -1},
 	{ TERMCLASS, 			NULL,						NULL,       	    0,            			0,           0,         1,         0,        -1},
 	{ NULL,      			NULL,       				"Event Tester",		0,            			0,           0,         0,         1,        -1},
-    { NULL,		 			"stalonetray",	  			NULL,       	    SYSTRAYTAG,			    1,           1,         0,         0,        -1},
-    { NULL,		 			"cairo-dock",	  			NULL,       	    0,         			    1,           1,         0,         0,        -1},
+    { NULL,                 NULL,	  			        "stalonetray", 	    SYSTRAYTAG,			    1,           1,         0,         0,        -1},
+    { NULL,		 			NULL,                       "cairo-dock", 		DOCKTAG,    		    1,           1,         0,         0,        -1},
 	{ NULL,		 			"ncmpcpp",	  				NULL,       	    0,            			1,           0,         1,         0,        -1},
 	{ NULL,		 			"megasync",	  				NULL,       	    0,            			1,           0,         0,         0,        -1},
 	{ NULL,		 			"qjackctl",  				NULL,       	    1 << 7,       			0,           0,         0,         0,        -1},
@@ -85,10 +85,10 @@ static const Rule rules[] = {
 	{ NULL,	     			NULL,						"pulsemixer",	    0,            			1,           0,         1,         0,        -1},
 	{ NULL,	     			"brave-browser",			NULL,				1,            			0,           0,         1,         0,        -1},
 	{ NULL,      			"spterm",    				NULL,       	    SPTAG(0),     			1,           0,         1,         0,        -1},
-	{ NULL,      			"spsignal",  				NULL,       	    1 << 8 | SPTAG(1),		1,           0,         1,         0,        -1},
-	{ NULL,      			"sptele",    				NULL,       	    1 << 8 | SPTAG(2),     	1,           0,         1,         0,        -1},
-	{ NULL,      			"spviber",   				NULL,       	    1 << 8 | SPTAG(3),     	1,           0,         1,         0,        -1},
-	{ NULL,      			"spmess",   				NULL,       	    1 << 8 | SPTAG(5),     	1,           0,         1,         0,        -1},
+	{ NULL,      			"spsignal",  				NULL,       	SPTAG(1),		1,           0,         1,         0,        -1},
+	{ NULL,      			"sptele",    				NULL,       	    SPTAG(2),     	1,           0,         1,         0,        -1},
+	{ NULL,      			"spviber",   				NULL,       	    SPTAG(3),     	1,           0,         1,         0,        -1},
+	{ NULL,      			"spmess",   				NULL,       	    SPTAG(5),     	1,           0,         1,         0,        -1},
 	{ NULL,      			"spcalc",    				NULL,       	    SPTAG(4),				1,           0,         1,         0,        -1},
 };
 
@@ -166,7 +166,7 @@ ResourcePref resources[] = {
 #include <X11/XF86keysym.h>
 #include "shiftview.c"
 
-static Key keys[] = {
+Key keys[] = {
 	/* modifier             key				  function        argument */
 	STACKKEYS(MODKEY,                          focus)
 	STACKKEYS(MODKEY|ShiftMask,                push)
@@ -355,7 +355,7 @@ static Key keys[] = {
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
-static Button buttons[] = {
+Button buttons[] = {
 	/* click                event mask      button          function        argument */
 #ifndef __OpenBSD__
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
@@ -368,10 +368,9 @@ static Button buttons[] = {
 #endif
 	{ ClkStatusText,        ShiftMask,      Button3,        spawn,          SHCMD(TERMINAL " -e vim ~/.local/src/dwmblocks/config.h") },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         0,              8,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        defaultgaps,	{0} },
+	{ ClkClientWin,         0,              9,        movemouse,      {0} },
+	{ ClkClientWin,         MODKEY,         Button2,        zoom,	{0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
-	{ ClkClientWin,         0,              9,        resizemouse,    {0} },
 	{ ClkClientWin,		MODKEY,		Button4,	incrgaps,	{.i = +1} },
 	{ ClkClientWin,		MODKEY,		Button5,	incrgaps,	{.i = -1} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },

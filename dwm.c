@@ -234,6 +234,7 @@ applyrules(Client *c)
 			c->isfloating = r->isfloating;
 			c->noswallow  = r->noswallow;
 			c->tags |= r->tags;
+            fprintf(stderr, "Applying rules for %s %s tag:%d\n", c->name, instance, c->tags);
 			if ((r->tags & SPTAGMASK) && r->isfloating) {
 				c->x = c->mon->wx + (c->mon->ww / 2 - WIDTH(c) / 2);
 				c->y = c->mon->wy + (c->mon->wh / 2 - HEIGHT(c) / 2);
@@ -248,7 +249,19 @@ applyrules(Client *c)
 		XFree(ch.res_class);
 	if (ch.res_name)
 		XFree(ch.res_name);
-	c->tags = c->tags & TAGMASK ? c->tags & TAGMASK : (c->mon->tagset[c->mon->seltags] & ~SPTAGMASK);
+    
+    if (c->tags & (SYSTRAYTAG|DOCKTAG)) {
+        c->tags &= (TAGMASK|SYSTRAYTAG|DOCKTAG);
+    }
+    else {
+        c->tags = c->tags & TAGMASK ? c->tags & TAGMASK : (c->mon->tagset[c->mon->seltags] & ~SPTAGMASK);
+    }
+
+    fprintf(stderr, "Rules applied for %s tag:%d\n", c->name, c->tags);
+    if (c->tags & SYSTRAYTAG) {
+        c->snext = NULL;
+        showhide(c);
+    }
 }
 
 int
@@ -342,15 +355,19 @@ arrangemon(Monitor *m)
 void
 attach(Client *c)
 {
-	c->next = c->mon->clients;
-	c->mon->clients = c;
+    c->next = c->mon->clients;
+    c->mon->clients = c;
 }
 
 void
 attachstack(Client *c)
 {
-	c->snext = c->mon->stack;
-	c->mon->stack = c;
+    if (c->tags & (DOCKTAG | SYSTRAYTAG))
+        return;
+
+    fprintf(stderr, "Stacking %s tag:%d\n", c->name, c->tags);
+    c->snext = c->mon->stack;
+    c->mon->stack = c;
 }
 
 void
@@ -700,8 +717,10 @@ detach(Client *c)
 {
 	Client **tc;
 
-	for (tc = &c->mon->clients; *tc && *tc != c; tc = &(*tc)->next);
-	*tc = c->next;
+	for (tc = &c->mon->clients; 
+        *tc && *tc != c; 
+        tc = &(*tc)->next);
+    *tc = c->next;
 }
 
 void
@@ -883,7 +902,7 @@ focusstack(const Arg *arg)
 	if (i < 0 || !selmon->sel || selmon->sel->isfullscreen)
 		return;
 
-	for(p = NULL, c = selmon->clients; c && (i || !ISVISIBLE(c));
+	for(p = NULL, c = selmon->clients; c && (i || !ISVISIBLE(c) || c->tags & (SYSTRAYTAG|DOCKTAG));
 	    i -= ISVISIBLE(c) ? 1 : 0, p = c, c = c->next);
 	focus(c ? c : p);
 	restack(selmon);
@@ -1255,6 +1274,11 @@ nexttiled(Client *c)
 void
 pop(Client *c)
 {
+    /*  
+     * TODO: look her for stack refactoring
+     *
+     *
+     * */
 	detach(c);
 	attach(c);
 	focus(c);
@@ -1467,6 +1491,7 @@ run(void)
 	/* main event loop */
 	XSync(dpy, False);
 	system("systemd-notify --ready --status=\"dwm started\"");
+    fprintf(stderr, "Tags: %d, %d\n", SYSTRAYTAG, DOCKTAG);
 	while (running && !XNextEvent(dpy, &ev))
 		if (handler[ev.type])
 			handler[ev.type](&ev); /* call handler */
@@ -1477,7 +1502,7 @@ runAutostart(void) {
 	// TODO maybe fix the line below for dwmblocks startup-crash
 	// system("killall -q dwmblocks; dwmblocks &");
 	system("/usr/bin/wmname LG3D || notify-send 'JavaRuntime' 'wmname app not installed'");
-	system("/usr/bin/stalonetray -t -f 3 --dockapp-mode simple -i 20 --kludges fix_window_pos --window-layer top --window-strut bottom &");
+	system("/usr/bin/stalonetray -t -f 3 --dockapp-mode simple -i 20 &");
 }
 
 void
@@ -1749,6 +1774,8 @@ showhide(Client *c)
 {
 	if (!c)
 		return;
+
+    fprintf(stderr, "Trying to show %s tag:%d\n", c->name, c->tags);
 	if (ISVISIBLE(c)) {
 		if ((c->tags & SPTAGMASK) && c->isfloating) {
 			c->x = c->mon->wx + (c->mon->ww / 2 - WIDTH(c) / 2);
@@ -1756,8 +1783,11 @@ showhide(Client *c)
 		}
 		if ((c->tags & SYSTRAYTAG)) {
 			c->x = c->mon->wx + (c->mon->ww / 2 + c->mon->ww / 4);
-			c->y = c->mon->wy  + c->mon->wh / 2;
-            XMoveWindow(dpy, c->win, 200, 200);
+			c->y =  1;
+            fprintf(stderr, "Showing system tray: x %d y %d\n", c->x, c->y);
+            XMoveWindow(dpy, c->win, c->x, c->y);
+            fprintf(stderr, "Showing system tray: x %d y %d\n", c->x, c->y);
+            resize(c, c->x, c->y, c->w, c->h, 0);
             showhide(c->snext);
 		} else 
         {

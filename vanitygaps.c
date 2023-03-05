@@ -2,34 +2,34 @@
 #include "headers/util.h"
 #include <stdio.h>
 /* Key binding functions */
-static void defaultgaps(const Arg *arg);
-static void incrgaps(const Arg *arg);
-/* static void incrigaps(const Arg *arg); */
-/* static void incrogaps(const Arg *arg); */
-/* static void incrohgaps(const Arg *arg); */
-/* static void incrovgaps(const Arg *arg); */
-/* static void incrihgaps(const Arg *arg); */
-/* static void incrivgaps(const Arg *arg); */
-static void togglegaps(const Arg *arg);
+void defaultgaps(const Arg *arg);
+void incrgaps(const Arg *arg);
+/* void incrigaps(const Arg *arg); */
+/* void incrogaps(const Arg *arg); */
+/* void incrohgaps(const Arg *arg); */
+/* void incrovgaps(const Arg *arg); */
+/* void incrihgaps(const Arg *arg); */
+/* void incrivgaps(const Arg *arg); */
+void togglegaps(const Arg *arg);
 
 /* Layouts */
-static void bstack(Monitor *m);
-static void centeredmaster(Monitor *m);
-static void centeredfloatingmaster(Monitor *m);
-static void deck(Monitor *m);
-static void dwindle(Monitor *m);
-static void fibonacci(Monitor *m, int s);
-static void spiral(Monitor *m);
-static void tile(Monitor *);
+void bstack(Monitor *m);
+void centeredmaster(Monitor *m);
+void centeredfloatingmaster(Monitor *m);
+void deck(Monitor *m);
+void dwindle(Monitor *m);
+void fibonacci(Monitor *m, int s);
+void spiral(Monitor *m);
+void tile(Monitor *);
 
 /* Internals */
-static void getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc);
-static void setgaps(int oh, int ov, int ih, int iv);
+void getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc);
+void setgaps(int oh, int ov, int ih, int iv);
 
 /* Settings */
 static int enablegaps = 1;
 
-static void
+void
 setgaps(int oh, int ov, int ih, int iv)
 {
 	if (oh < 0) oh = 0;
@@ -44,20 +44,20 @@ setgaps(int oh, int ov, int ih, int iv)
 	arrange(selmon);
 }
 
-static void
+void
 togglegaps(const Arg *arg)
 {
 	enablegaps = !enablegaps;
 	arrange(NULL);
 }
 
-static void
+void
 defaultgaps(const Arg *arg)
 {
 	setgaps(gappoh, gappov, gappih, gappiv);
 }
 
-static void
+void
 incrgaps(const Arg *arg)
 {
 	setgaps(
@@ -68,7 +68,7 @@ incrgaps(const Arg *arg)
 	);
 }
 
-/* static void */
+/* void */
 /* incrigaps(const Arg *arg) */
 /* { */
 /* 	setgaps( */
@@ -79,7 +79,7 @@ incrgaps(const Arg *arg)
 /* 	); */
 /* } */
 
-/* static void */
+/* void */
 /* incrogaps(const Arg *arg) */
 /* { */
 /* 	setgaps( */
@@ -90,7 +90,7 @@ incrgaps(const Arg *arg)
 /* 	); */
 /* } */
 
-/* static void */
+/* void */
 /* incrohgaps(const Arg *arg) */
 /* { */
 /* 	setgaps( */
@@ -101,7 +101,7 @@ incrgaps(const Arg *arg)
 /* 	); */
 /* } */
 
-/* static void */
+/* void */
 /* incrovgaps(const Arg *arg) */
 /* { */
 /* 	setgaps( */
@@ -112,7 +112,7 @@ incrgaps(const Arg *arg)
 /* 	); */
 /* } */
 
-/* static void */
+/* void */
 /* incrihgaps(const Arg *arg) */
 /* { */
 /* 	setgaps( */
@@ -123,7 +123,7 @@ incrgaps(const Arg *arg)
 /* 	); */
 /* } */
 
-/* static void */
+/* void */
 /* incrivgaps(const Arg *arg) */
 /* { */
 /* 	setgaps( */
@@ -134,7 +134,7 @@ incrgaps(const Arg *arg)
 /* 	); */
 /* } */
 
-static void
+void
 getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc)
 {
 	unsigned int n, oe, ie;
@@ -186,7 +186,7 @@ getfacts(Monitor *m, int msize, int ssize, float *mf, float *sf, int *mr, int *s
  * https://dwm.suckless.org/patches/bottomstack/
  */
 
-static void
+void
 bstack(Monitor *m)
 {
 	unsigned int i, n;
@@ -378,7 +378,7 @@ centeredfloatingmaster(Monitor *m)
  * https://dwm.suckless.org/patches/deck/
  */
 
-static void
+void
 deck(Monitor *m)
 {
 	unsigned int i, n;
@@ -425,7 +425,7 @@ deck(Monitor *m)
  * https://dwm.suckless.org/patches/fibonacci/
  */
 
-static void
+void
 fibonacci(Monitor *m, int s)
 {
 	unsigned int i, n;
@@ -487,13 +487,13 @@ fibonacci(Monitor *m, int s)
 	}
 }
 
-static void
+void
 dwindle(Monitor *m)
 {
 	fibonacci(m, 1);
 }
 
-static void
+void
 spiral(Monitor *m)
 {
 	fibonacci(m, 0);
@@ -503,7 +503,7 @@ spiral(Monitor *m)
  * Default tile layout + gaps
  */
 
-static void
+void
 tile(Monitor *m)
 {
 	unsigned int i, n;
