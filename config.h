@@ -10,7 +10,7 @@
 #define TERMCLASS "St"
 #define BACKRES "xrandr  | grep '*' -B1 | grep -v '*' | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
 #define FORWRES "xrandr  | grep '*' -A1 | grep -v '*' | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
-#define SELRES "xrandr  | dmenu | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
+#define SELRES "xrandr  | rofi -theme arthur fuzzy -dmenu | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
 
 /* appearance */
 static unsigned int borderpx  = 0;        /* border pixel of windows */
@@ -20,14 +20,14 @@ static int swallowfloating    = 0;        /* 1 means swallow floating windows by
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 //static char *fonts[]          = { "monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true"  };
-static char *fonts[]          = { "monospace:size=11", "icomoon:pixelsize=14:style=Regular"};
+ char *fonts[]          = { "monospace:size=11", "icomoon:pixelsize=14:style=Regular"};
 static char normbgcolor[]           = "#040200";
 static char normbordercolor[]       = "#ffb55d";
 static char normfgcolor[]           = "#deaf76";
 static char selfgcolor[]            = "#ffb55d";
 static char selbordercolor[]        = "#00bbff";
 static char selbgcolor[]            = "#040200";
-static char *colors[][3] = {
+ char *colors[][3] = {
    /*               fg           bg           border   */
    [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
    [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
@@ -38,11 +38,11 @@ const char *name;
 const void *cmd;
 } Sp;
 const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "140x33", NULL };
-const char *spcmd2[] = {TERMINAL, "-n", "spsignal", "-g", "100x30",  "-e", "signal-desktop",NULL };
+const char *spcmd2[] = {TERMINAL, "-n", "spsignal", "-g", "120x50",  "-e", "signal-desktop",NULL };
 const char *spcmd3[] = {TERMINAL, "-n", "sptele", "-g", "80x30", "-e", "telegram-desktop", NULL };
-const char *spcmd4[] = {TERMINAL, "-n", "spviber", "-g", "80x30", "-e", "viber", NULL };
+const char *spcmd4[] = {TERMINAL, "-n", "spviber", "-g", "120x50", "-e", "viber", NULL };
 const char *spcmd5[] = {TERMINAL, "-n", "spcalc", "-g", "40x10", "-e", "bc", "-lq", NULL };
-const char *spcmd6[] = {TERMINAL, "-n", "spmess", "-g", "110x30", "-e", "messenger", NULL };
+const char *spcmd6[] = {TERMINAL, "-n", "spmess", "-g", "120x50", "-e", "messenger", NULL };
 
 Sp scratchpads[] = {
 /* name          cmd  */
@@ -62,34 +62,35 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	*/
-	/* class				instance					title				tags mask		isfloating   issticky   isterminal  noswallow  monitor */
-	{ "Gimp",				NULL,						NULL,       	    1 << 8,					0,           0,         0,         0,        -1},
-	{ TERMCLASS, 			NULL,						NULL,       	    0,            			0,           0,         1,         0,        -1},
-	{ NULL,      			NULL,       				"Event Tester",		0,            			0,           0,         0,         1,        -1},
-    { NULL,                 NULL,	  			        "stalonetray", 	    SYSTRAYTAG,			    1,           1,         0,         0,        -1},
-    { NULL,		 			NULL,                       "cairo-dock", 		DOCKTAG,    		    1,           1,         0,         0,        -1},
-	{ NULL,		 			"ncmpcpp",	  				NULL,       	    0,            			1,           0,         1,         0,        -1},
-	{ NULL,		 			"megasync",	  				NULL,       	    0,            			1,           0,         0,         0,        -1},
-	{ NULL,		 			"qjackctl",  				NULL,       	    1 << 7,       			0,           0,         0,         0,        -1},
-	{ NULL, 	 			NULL,						"EVALUATION",		1 << 5,       			1,           0,         0,         0,        -1},
-	// { NULL, 	 			NULL,  	  					"abd",				1 << 2,       			0,           0,         1,         0,        -1},
-	{ "Steam",	 			NULL,						NULL,				1 << 4,       			0,           0,         0,         0,        -1},
-	{ "VirtualBox Manager",	NULL,		  				NULL,				1 << 4,       			0,           0,         0,         0,        -1},
-	{ "trello-nativefier-a9fb22",NULL,		  				NULL,				1 << 4,    			0,           0,         0,         0,        -1},
-	{ "Zathura",			NULL,		  				NULL,				1 << 1,       			0,           0,         0,         0,        -1},
-	{ "GitAhead",			NULL,		  				NULL,				1 << 3,       			0,           0,         0,         0,        -1},
-	{ "Slack",	 			NULL,		  				NULL,  				1 << 8,       			0,           0,         0,         0,        -1},
-	{ "discord", 			NULL,						NULL,  				1 << 7,       			0,           0,         0,         0,        -1},
-	{ "zoom",	 			NULL,						NULL,  				1 << 8,       			0,           0,         0,         0,        -1},
-	{ NULL,		 			"jitsi meet",				NULL,				1 << 8,       			1,           0,         1,         0,        -1},
-	{ NULL,	     			NULL,						"pulsemixer",	    0,            			1,           0,         1,         0,        -1},
-	{ NULL,	     			"brave-browser",			NULL,				1,            			0,           0,         1,         0,        -1},
-	{ NULL,      			"spterm",    				NULL,       	    SPTAG(0),     			1,           0,         1,         0,        -1},
-	{ NULL,      			"spsignal",  				NULL,       	SPTAG(1),		1,           0,         1,         0,        -1},
-	{ NULL,      			"sptele",    				NULL,       	    SPTAG(2),     	1,           0,         1,         0,        -1},
-	{ NULL,      			"spviber",   				NULL,       	    SPTAG(3),     	1,           0,         1,         0,        -1},
-	{ NULL,      			"spmess",   				NULL,       	    SPTAG(5),     	1,           0,         1,         0,        -1},
-	{ NULL,      			"spcalc",    				NULL,       	    SPTAG(4),				1,           0,         1,         0,        -1},
+	/* class				instance					title			tags mask	isfloating   issticky   isterminal  noswallow  monitor */
+	{ "Gimp",				NULL,						NULL,       	    1 << 8,		0,           0,         0,         0,        -1},
+	{ TERMCLASS, 			NULL,						NULL,       	    0,          0,           0,         1,         0,        -1},
+	{ NULL,      			NULL,       				"Event Tester",		0,          0,           0,         0,         1,        -1},
+    { NULL,                 NULL,	  			        "stalonetray", 	    SYSTRAYTAG,	1,           1,         0,         0,        -1},
+    { NULL,		 			NULL,                       "cairo-dock", 		DOCKTAG,    1,           1,         0,         0,        -1},
+	{ NULL,		 			"ncmpcpp",	  				NULL,       	    0,          1,           0,         1,         0,        -1},
+	{ NULL,		 			"megasync",	  				NULL,       	    0,          1,           0,         0,         0,        -1},
+    { NULL,	     			"brave-browser",			NULL,				1,          0,           0,         1,         0,        -1},
+    { "Zathura",			NULL,		  				NULL,				1 << 1,     0,           0,         0,         0,        -1},
+    { "Inkscape",           NULL,						NULL,				1 << 3,     0,           0,         0,         0,        -1},
+    { "GitAhead",			NULL,		  				NULL,				1 << 3,     0,           0,         0,         0,        -1},
+    { "Steam",	 			NULL,						NULL,				1 << 4,     0,           0,         0,         0,        -1},
+    { "VirtualBox Manager",	NULL,		  				NULL,				1 << 4,     0,           0,         0,         0,        -1},
+    { "trello-nativefier-a9fb22",NULL,		  			NULL,				1 << 4,     0,           0,         0,         0,        -1},
+    { NULL, 	 			NULL,						"EVALUATION",		1 << 5,     1,           0,         0,         0,        -1},
+	{ NULL,		 			"qjackctl",  				NULL,       	    1 << 7,     0,           0,         0,         0,        -1},
+	{ NULL,					"spotify", 		    		NULL,				1 << 7,     0,           0,         0,         0,        -1},
+	{ "discord", 			NULL,						NULL,  				1 << 8,     0,           0,         0,         0,        -1},
+    { "Slack",	 			NULL,		  				NULL,  				1 << 8,     0,           0,         0,         0,        -1},
+	{ "zoom",	 			NULL,						NULL,  				1 << 8,     0,           0,         0,         0,        -1},
+	{ NULL,		 			"jitsi meet",				NULL,				1 << 8,     1,           0,         1,         0,        -1},
+	{ NULL,	     			NULL,						"pulsemixer",	    0,          1,           0,         1,         0,        -1},
+	{ NULL,      			"spterm",    				NULL,       	    SPTAG(0),   1,           0,         1,         0,        -1},
+	{ NULL,      			"spsignal",  				NULL,       	    SPTAG(1),	1,           0,         1,         0,        -1},
+	{ NULL,      			"sptele",    				NULL,       	    SPTAG(2),   1,           0,         1,         0,        -1},
+	{ NULL,      			"spviber",   				NULL,       	    SPTAG(3),   1,           0,         1,         0,        -1},
+	{ NULL,      			"spmess",   				NULL,       	    SPTAG(5),   1,           0,         1,         0,        -1},
+	{ NULL,      			"spcalc",    				NULL,       	    SPTAG(4),	1,           0,         1,         0,        -1},
 };
 
 /* layout(s) */
@@ -100,6 +101,8 @@ static int resizehints = 1;    /* 1 means respect size hints in tiled resizals *
 #include "vanitygaps.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
+    { "|M|",	centeredmaster },		/* Master in middle, slaves on sides */
+
  	{ "[]=",	tile },			/* Default: Master on left, slaves on right */
 	{ "TTT",	bstack },		/* Master on top, slaves on bottom */
 
@@ -109,7 +112,6 @@ static const Layout layouts[] = {
 	{ "[D]",	deck },			/* Master on left, slaves in monocle-like mode on right */
  	{ "[M]",	monocle },		/* All windows on top of eachother */
 
-	{ "|M|",	centeredmaster },		/* Master in middle, slaves on sides */
 	{ ">M>",	centeredfloatingmaster },	/* Same but master floats */
 
 	{ "><>",	NULL },			/* no layout function means floating behavior */
@@ -374,12 +376,19 @@ Button buttons[] = {
 	{ ClkClientWin,		MODKEY,		Button4,	incrgaps,	{.i = +1} },
 	{ ClkClientWin,		MODKEY,		Button5,	incrgaps,	{.i = -1} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
+    { ClkTagBar,		    0,	            Button2,	    focusstack,		    {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
-	{ ClkTagBar,		0,		Button4,	shiftview,	{.i = -1} },
-	{ ClkTagBar,		0,		Button5,	shiftview,	{.i = 1} },
-	{ ClkRootWin,		0,		Button2,	togglebar,	{0} },
+	{ ClkTagBar,		    0,	            Button4,	    focusstack,	    {.i = INC(+1) } },
+	{ ClkTagBar,		    0,	            Button5,	    focusstack,	    {.i = INC(-1) } },
+	{ ClkTagBar,            0,              8,              toggletag,      {0} },
+	{ ClkTagBar,            0,              9,              tag,            {0} },
+    { ClkTagBar,            MODKEY,         Button1,        toggletag,      {0} },
+    { ClkTagBar,            MODKEY,         Button3,        tag,            {0} },
+	{ ClkRootWin,		    0,	            Button2,	    pushstack,	    {0} },
+	{ ClkRootWin,		    0,	            Button4,	    focusstack,	    {.i = INC(+1) } },
+	{ ClkRootWin,		    0,	            Button5,	    focusstack,	    {.i = INC(-1) } },
+	{ ClkRootWin,		    0,	            8,	            pushstack,	    {.i = INC(+1) } },
+	{ ClkRootWin,		    0,	            9,	            pushstack,	    {.i = INC(-1) } },
 };
 #endif /* ifndef DEBUG */
 

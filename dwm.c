@@ -717,9 +717,8 @@ detach(Client *c)
 {
 	Client **tc;
 
-	for (tc = &c->mon->clients; 
-        *tc && *tc != c; 
-        tc = &(*tc)->next);
+	for (tc = &c->mon->clients; *tc && *tc != c; tc = &(*tc)->next);
+
     *tc = c->next;
 }
 
