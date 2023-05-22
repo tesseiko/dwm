@@ -1501,7 +1501,7 @@ runAutostart(void) {
 	// TODO maybe fix the line below for dwmblocks startup-crash
 	// system("killall -q dwmblocks; dwmblocks &");
 	system("/usr/bin/wmname LG3D || notify-send 'JavaRuntime' 'wmname app not installed'");
-	system("/usr/bin/stalonetray -t -f 3 --dockapp-mode simple -i 20 &");
+	system("trayer --edge top --transparent true --expand false --width 10 --align right --margin 300 --padding 10 --alpha 190&");
 }
 
 void
