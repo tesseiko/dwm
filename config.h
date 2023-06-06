@@ -66,7 +66,7 @@ static const Rule rules[] = {
 	{ "Gimp",				NULL,						NULL,       	    1 << 8,		0,           0,         0,         0,        -1},
 	{ TERMCLASS, 			NULL,						NULL,       	    0,          0,           0,         1,         0,        -1},
 	{ NULL,      			NULL,       				"Event Tester",		0,          0,           0,         0,         1,        -1},
-    { NULL,                 NULL,	  			        "stalonetray", 	    SYSTRAYTAG,	1,           1,         0,         0,        -1},
+    { NULL,                 NULL,	  			        "panel", 	        SYSTRAYTAG,	1,           1,         0,         0,        -1},
     { NULL,		 			NULL,                       "cairo-dock", 		DOCKTAG,    1,           1,         0,         0,        -1},
 	{ NULL,		 			"ncmpcpp",	  				NULL,       	    0,          1,           0,         1,         0,        -1},
 	{ NULL,		 			"megasync",	  				NULL,       	    0,          1,           0,         0,         0,        -1},
