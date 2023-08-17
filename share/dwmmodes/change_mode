@@ -1,0 +1,18 @@
+#!/bin/bash
+
+MODE_DIR=$XDG_DATA_HOME/dwmmodes/modes
+CURRENT_MODE_LINK=$HOME/.local/bin/dwmmode
+CURRENT_MODE=`realpath /home/lef/.local/bin/dwmmode | cut -d/ -f8`
+if [ $CURRENT_MODE != "" ]; then
+	NEXT_MODE=`(ls $MODE_DIR; ls $MODE_DIR) | grep $CURRENT_MODE -A1 | head -2 | tail -1`
+	echo "good transition"
+else
+	NEXT_MODE=`(ls $MODE_DIR) | head -2 | tail -1`
+	echo "bad but good"
+fi
+
+echo current: $CURRENT_MODE
+echo next: $NEXT_MODE
+rm $CURRENT_MODE_LINK
+ln -sf $MODE_DIR/$NEXT_MODE $CURRENT_MODE_LINK
+sudo kill -61 $(pidof dwmblocks)

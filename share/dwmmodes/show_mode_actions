@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+
+notify-send q "$(cat $HOME/.local/bin/dwmmode/q)"
+notify-send w "$(cat $HOME/.local/bin/dwmmode/w)"
+notify-send e "$(cat $HOME/.local/bin/dwmmode/e)"
+notify-send r "$(cat $HOME/.local/bin/dwmmode/r)"

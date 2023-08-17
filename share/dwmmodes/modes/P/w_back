@@ -1,0 +1,19 @@
+#!/bin/python3
+
+import yaml, os
+
+with open('/home/lef/.local/share/dwmmodes/modes/P/tses.yaml', 'r') as f: 
+    tses = yaml.safe_load(f)
+    for ses in tses['Session']:
+        print("tmux new -d -c " + ses['dir'] + " -s " + ses['name'])
+        os.system("tmux new -d -c " + ses['dir'] + " -s " + ses['name'])
+        if not ses['windows']: continue
+        for w in ses['windows']:
+            print("tmux neww -c " + ses['dir']+"/"+w['dir'] + " -n " + w['name'] + " -t " + ses['name'])
+            os.system("tmux list-windows -a | grep " + w['name'] +   " || tmux neww -c " + ses['dir']+"/"+w['dir'] + " -n " + w['name'] + " -t " + ses['name'])
+
+
+# tmux new -c /home/lef/work/MIA -s MIA -d
+# tmux neww -c /home/lef/work/MIA/MIASync -n Sync -t MIA 
+# cd $HOME/work/diplwmatiki/principals && tmux new -s principals -d
+

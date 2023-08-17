@@ -1,0 +1,11 @@
+Session: 
+- name: DynamicEQ
+  dir: /home/lef/work/MIA/DynamicEQ
+  windows:
+  - name: Sync
+    dir: ../MIASync
+- name: principals 
+  dir: /home/lef/work/diplwmatiki/principals
+  windows:
+  - name: worktree
+    dir: ../worktrees/udp_syn
