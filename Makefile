@@ -6,7 +6,7 @@ include config.mk
 SRC = drw.c dwm.c util.c
 OBJ = ${SRC:.c=.o}
 
-all: options dwm
+all: options dwm modes
 
 options:
 	@echo dwm build options:
@@ -21,6 +21,9 @@ ${OBJ}: config.h config.mk
 
 dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
+
+modes:
+	cp -r share/dwmmodes ${HOME}/.local/share/
 
 clean:
 	rm -f dwm ${OBJ} dwm-${VERSION}.tar.gz *.orig *.rej
