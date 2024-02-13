@@ -33,7 +33,7 @@ struct Client {
 	unsigned int tags;
 	int isfixed, isfloating, isurgent, 
 		neverfocus, oldstate, isfullscreen, 
-		isterminal, noswallow, issticky, isalwaysontop;
+		isterminal, noswallow, issticky, isalwaysontop, isalwaysonbackground;
 	pid_t pid;
 	Client *next;
 	Client *snext;
@@ -131,6 +131,7 @@ void tagmon(const Arg *arg);
 void zoom(const Arg *arg);
 void togglefloating(const Arg *arg);
 void togglealwaysontop(const Arg *arg);
+void togglealwaysonback(const Arg *arg);
 void sigdwmblocks(const Arg *arg);
 void movemouse(const Arg *arg);
 void resizemouse(const Arg *arg);

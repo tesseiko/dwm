@@ -20,6 +20,7 @@
  *
  * To understand everything else, start reading main().
  */
+#include "Xlib.h"
 #include <errno.h>
 #include <locale.h>
 #include <signal.h>
@@ -1467,7 +1468,9 @@ restack(Monitor *m)
  			if(c->isalwaysontop){
  				XRaiseWindow(dpy, c->win);
  				break;
- 			}
+ 			} else if (c->isalwaysonbackground){
+                XLowerWindow(dpy, c->win);
+            }
  		}
  	}
 	if (m->lt[m->sellt]->arrange) {
@@ -1605,7 +1608,10 @@ setfullscreen(Client *c, int fullscreen)
 		c->bw = 0;
 		c->isfloating = 1;
 		resizeclient(c, c->mon->mx, c->mon->my, c->mon->mw, c->mon->mh);
-		XRaiseWindow(dpy, c->win);
+        if (c->isalwaysonbackground)
+            XLowerWindow(dpy, c->win);
+        else
+            XRaiseWindow(dpy, c->win);
 	} else if (!fullscreen && c->isfullscreen){
 		XChangeProperty(dpy, c->win, netatom[NetWMState], XA_ATOM, 32,
 			PropModeReplace, (unsigned char*)0, 0);
@@ -1900,6 +1906,18 @@ togglefloating(const Arg *arg)
 	else
 		selmon->sel->isalwaysontop = 0; /* disabled, turn this off too */
 	arrange(selmon);
+}
+
+void
+togglealwaysonback(const Arg *arg)
+{
+	if (!selmon->sel)
+		return;
+	if(selmon->sel->isalwaysonbackground){
+		selmon->sel->isalwaysonbackground = 0;
+	}else{
+		selmon->sel->isalwaysonbackground = 1;
+    }
 }
 
 void
