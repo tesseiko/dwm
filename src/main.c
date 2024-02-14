@@ -23,12 +23,15 @@
 #include <Xlib.h>
 #include <locale.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <X11/Xlib-xcb.h>
+#include <X11/Xft/Xft.h>
 
 #include "util.h"
 #include "dwm.h"
+#include "drw.h"
 #include "x11manager.h"
 
 

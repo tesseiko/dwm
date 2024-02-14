@@ -1,7 +1,9 @@
-#include "vanitygaps.h"
+#include <stdio.h>
+#include <sys/types.h>
+#include <Xlib.h>
 #include "dwm.h"
 #include "util.h"
-#include <stdio.h>
+#include "vanitygaps.h"
 /* Settings */
 int enablegaps = 1;
 

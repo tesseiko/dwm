@@ -10,7 +10,6 @@
 
 #ifndef VANITYGAPS_H
 #define VANITYGAPS_H
-#include "dwm.h"
 /* Settings */
 /* Key binding functions */
 extern Monitor *selmon;

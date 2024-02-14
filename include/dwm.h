@@ -2,18 +2,19 @@
 #define DWM_H
 
 
-#include <X11/Xlib.h>
-#include <stdlib.h>
 
 // other
 //
 
 extern int enablegaps;
-#include <X11/Xproto.h>
 #define SPTAGMASK		(((1 << LENGTH(scratchpads))-1) << LENGTH(tags))
 
 #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
+
+#define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
+#define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
+#define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]) || C->issticky)
 
 typedef union {
 	int i;
@@ -84,20 +85,49 @@ void scan(void);
 void cleanup(void);
 void runAutostart(void);
 void load_xresources(void);
+Client *wintoclient(Window w);
+void restack(Monitor *m);
+void setfullscreen(Client *c, int fullscreen);
+void seturgent(Client *c, int urg);
+void configure(Client *c);
+int updategeom(void);
+void resizeclient(Client *c, int x, int y, int w, int h);
+void updatebars(void);
+void drawbars(void);
+void drawbar(Monitor *m);
+Client *swallowingclient(Window w);
+void unmanage(Client *c, int destroyed);
+void manage(Window w, XWindowAttributes *wa);
+void setfocus(Client *c);
+Monitor *recttomon(int x, int y, int w, int h);
+void updatesizehints(Client *c);
+void updatestatus(void);
+void updatetitle(Client *c);
+void updatewindowtype(Client *c);
+void updatewmhints(Client *c);
+void setclientstate(Client *c, long state);
+void updatenumlockmask(void);
+
+void unfocus(Client *c, int setfocus);
+void focus(Client *c);
+Monitor *wintomon(Window w);
+extern void (*handler[LASTEvent]) (XEvent *);
 
 
 // for config
-#include <X11/keysym.h>
 #define SYSTRAYTAG              1 << 18
 #define DOCKTAG                 1 << 19
-
-#define LENGTH(X)               (sizeof X / sizeof X[0])
-
-#define SPTAG(i)		((1 << LENGTH(tags)) << (i))
 #define INC(X)                  ((X) + 2000)
-#define GETINC(X)               ((X) - 2000)
+#define SPTAG(i)		((1 << 9) << (i))
 
 enum { SchemeNorm, SchemeSel }; /* color schemes */
+enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
+/* enums */
+enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
+enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
+       NetWMFullscreen, NetActiveWindow, NetWMWindowType,
+       NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
+
 
 
 typedef struct {
@@ -172,8 +202,6 @@ typedef struct {
 	const Arg arg;
 } Button;
 
-// #include "vanitygaps.h"
-// #include "config.h"
 
 #endif // DWM_H
 

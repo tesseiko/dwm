@@ -1,7 +1,6 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-# include <stdlib.h>
 /* See LICENSE file for copyright and license details. */
 
 
