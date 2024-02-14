@@ -1,12 +1,14 @@
 #ifndef DWM_H
 #define DWM_H
 
+
 #include <X11/Xlib.h>
 #include <stdlib.h>
 
 // other
 //
 
+extern int enablegaps;
 #include <X11/Xproto.h>
 #define SPTAGMASK		(((1 << LENGTH(scratchpads))-1) << LENGTH(tags))
 
@@ -72,18 +74,11 @@ struct Monitor {
 	const Layout *lt[2];
 };
 
-Monitor *selmon;
 
 void arrange(Monitor *m);
 Client *nexttiled(Client *c);
 void resize(Client *c, int x, int y, int w, int h, int interact);
 
-// config quick patches
-int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
-unsigned int gappih    = 20;       /* horiz inner gap between windows */
-unsigned int gappiv    = 10;       /* vert inner gap between windows */
-unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-unsigned int gappov    = 30;       /* vert outer gap between windows and screen edge */
 
 // for config
 #include <X11/keysym.h>
@@ -97,6 +92,7 @@ unsigned int gappov    = 30;       /* vert outer gap between windows and screen 
 #define GETINC(X)               ((X) - 2000)
 
 enum { SchemeNorm, SchemeSel }; /* color schemes */
+
 
 typedef struct {
 	const char *class;
@@ -112,6 +108,8 @@ typedef struct {
 
 void monocle(Monitor *m);
 void spawn(const Arg *arg);
+void shiftview(const Arg *arg);
+void shifttag(const Arg *arg);
 void togglescratch(const Arg *arg);
 void view(const Arg *arg);
 void toggleview(const Arg *arg);
@@ -167,6 +165,9 @@ typedef struct {
 	void (*func)(const Arg *arg);
 	const Arg arg;
 } Button;
+
+// #include "vanitygaps.h"
+// #include "config.h"
 
 #endif // DWM_H
 

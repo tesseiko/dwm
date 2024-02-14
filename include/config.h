@@ -2,8 +2,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-
-#include "headers/dwm.h"
 /* Constants */
 #define TERMINAL "st"
 #define DWMMODE "/home/lef/.local/bin/dwmmode/"
@@ -11,27 +9,6 @@
 #define BACKRES "xrandr  | grep '*' -B1 | grep -v '*' | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
 #define FORWRES "xrandr  | grep '*' -A1 | grep -v '*' | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
 #define SELRES "xrandr  | rofi -theme arthur fuzzy -dmenu | awk '{print $1}' | grep x | xargs xrandr -s &&xrandr | grep '*' | awk '{print $1}' | xargs notify-send || notify-send 'no change'"
-
-/* appearance */
-static unsigned int borderpx  = 0;        /* border pixel of windows */
-static unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int cornerrad = 8;
-static int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
-static int showbar            = 1;        /* 0 means no bar */
-static int topbar             = 1;        /* 0 means bottom bar */
-//static char *fonts[]          = { "monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true"  };
- char *fonts[]          = { "monospace:size=11", "icomoon:pixelsize=14:style=Regular"};
-static char normbgcolor[]           = "#040200";
-static char normbordercolor[]       = "#ffb55d";
-static char normfgcolor[]           = "#deaf76";
-static char selfgcolor[]            = "#ffb55d";
-static char selbordercolor[]        = "#00bbff";
-static char selbgcolor[]            = "#040200";
- char *colors[][3] = {
-   /*               fg           bg           border   */
-   [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
-   [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
-};
 
 typedef struct {
 const char *name;
@@ -52,6 +29,29 @@ Sp scratchpads[] = {
 {"spviber",     spcmd4},
 {"spcalc",      spcmd5},
 {"spdrop",      spcmd6},
+};
+
+#include "dwm.h"
+
+/* appearance */
+static unsigned int borderpx  = 0;        /* border pixel of windows */
+static unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int cornerrad = 8;
+static int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
+static int showbar            = 1;        /* 0 means no bar */
+static int topbar             = 1;        /* 0 means bottom bar */
+//static char *fonts[]          = { "monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true"  };
+ char *fonts[]          = { "monospace:size=11", "icomoon:pixelsize=14:style=Regular"};
+static char normbgcolor[]           = "#040200";
+static char normbordercolor[]       = "#ffb55d";
+static char normfgcolor[]           = "#deaf76";
+static char selfgcolor[]            = "#ffb55d";
+static char selbordercolor[]        = "#00bbff";
+static char selbgcolor[]            = "#040200";
+ char *colors[][3] = {
+   /*               fg           bg           border   */
+   [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
+   [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
 };
 
 /* tagging */
@@ -102,7 +102,7 @@ static float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static int nmaster     = 1;    /* number of clients in master area */
 static int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
-#include "vanitygaps.c"
+#include "vanitygaps.h"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
     { "|M|",	centeredmaster },		/* Master in middle, slaves on sides */
@@ -170,8 +170,8 @@ ResourcePref resources[] = {
 };
 
 #include <X11/XF86keysym.h>
-#include "shiftview.c"
 
+// #include "shiftview.h"
 Key keys[] = {
 	/* modifier             key				  function        argument */
 	STACKKEYS(MODKEY,                          focus)

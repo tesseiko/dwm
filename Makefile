@@ -3,10 +3,17 @@
 
 include config.mk
 
-SRC = drw.c dwm.c util.c
-OBJ = ${SRC:.c=.o}
+SRC_DIR := src
+INC_DIR := include
+OBJ_DIR := builds/obj
+BIN_DIR := builds/bin
 
-all: options dwm modes
+EXE := $(BIN_DIR)/dwm
+
+SRC := $(wildcard $(SRC_DIR)/*.c)
+OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+all: options ${EXE} modes
 
 options:
 	@echo dwm build options:
@@ -14,20 +21,25 @@ options:
 	@echo "LDFLAGS  = ${LDFLAGS}"
 	@echo "CC       = ${CC}"
 
-.c.o:
-	${CC} -c ${CFLAGS} $<
 
-${OBJ}: config.h config.mk
+${OBJ}: include/config.h config.mk
 
-dwm: ${OBJ}
+
+${EXE}: ${OBJ} | $(BIN_DIR)
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	${CC} ${CPPFLAGS} ${CFLAGS} -c $< -o $@
+
+${BIN_DIR} ${OBJ_DIR}: 
+	mkdir -p $@
 
 modes:
 	cp -r share/dwmmodes ${HOME}/.local/share/
 
 clean:
-	rm -f dwm ${OBJ} dwm-${VERSION}.tar.gz *.orig *.rej
-
+	rm -f ${OBJ} dwm-${VERSION}.tar.gz *.orig *.rej
+	rm -rf ${OBJ_DIR} ${BIN_DIR} builds
 dist: clean
 	mkdir -p dwm-${VERSION}
 	cp -R LICENSE Makefile README config.mk\
@@ -38,7 +50,7 @@ dist: clean
 
 install: all
 	mkdir -p ${DESTDIR}${PREFIX}/bin
-	cp -f dwm ${DESTDIR}${PREFIX}/bin
+	cp -f bin/dwm ${DESTDIR}${PREFIX}/bin
 	chmod 755 ${DESTDIR}${PREFIX}/bin/dwm
 	# mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	# sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
@@ -51,5 +63,7 @@ uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
 		${DESTDIR}${PREFIX}/share/dwm/larbs.mom\
 		${DESTDIR}${MANPREFIX}/man1/dwm.1
+
+-include $(OBJ:.o=.d)
 
 .PHONY: all options clean dist install uninstall

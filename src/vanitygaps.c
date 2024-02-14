@@ -1,33 +1,9 @@
-#include "headers/dwm.h"
-#include "headers/util.h"
+#include "vanitygaps.h"
+#include "dwm.h"
+#include "util.h"
 #include <stdio.h>
-/* Key binding functions */
-void defaultgaps(const Arg *arg);
-void incrgaps(const Arg *arg);
-/* void incrigaps(const Arg *arg); */
-/* void incrogaps(const Arg *arg); */
-/* void incrohgaps(const Arg *arg); */
-/* void incrovgaps(const Arg *arg); */
-/* void incrihgaps(const Arg *arg); */
-/* void incrivgaps(const Arg *arg); */
-void togglegaps(const Arg *arg);
-
-/* Layouts */
-void bstack(Monitor *m);
-void centeredmaster(Monitor *m);
-void centeredfloatingmaster(Monitor *m);
-void deck(Monitor *m);
-void dwindle(Monitor *m);
-void fibonacci(Monitor *m, int s);
-void spiral(Monitor *m);
-void tile(Monitor *);
-
-/* Internals */
-void getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc);
-void setgaps(int oh, int ov, int ih, int iv);
-
 /* Settings */
-static int enablegaps = 1;
+int enablegaps = 1;
 
 void
 setgaps(int oh, int ov, int ih, int iv)
