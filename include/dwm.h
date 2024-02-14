@@ -78,6 +78,13 @@ struct Monitor {
 void arrange(Monitor *m);
 Client *nexttiled(Client *c);
 void resize(Client *c, int x, int y, int w, int h, int interact);
+void setup(void);
+int xerror(Display *dpy, XErrorEvent *ee);
+void run(void);
+void scan(void);
+void cleanup(void);
+void runAutostart(void);
+void load_xresources(void);
 
 
 // for config
