@@ -24,6 +24,11 @@ extern Atom wmatom[WMLast], netatom[NetLast];
 extern Window root, wmcheckwin;
 extern int sw, sh;           /* X display screen geometry width, height */
 extern Monitor *mons;
+extern int enablefullscreen;
+extern int enableoutergaps;
+extern Clr **scheme;
+extern Cur *cursor[CurLast];
+extern const char broken[];
 
 // extern static const char *spcmd2[];
 // extern static const char *spcmd2[];
@@ -38,4 +43,15 @@ extern Monitor *mons;
 
 int xerror(Display *dpy, XErrorEvent *ee);
 void grabkeys(void);
+void load_xresources(void);
+void cleanup(void);
+void scan(void);
+void setfullscreen(Client *c, int fullscreen);
+void resizeclient(Client *c, int x, int y, int w, int h);
+void restack(Monitor *m);
+void cleanupmon(Monitor *mon);
+void updateclientlist(void);
+void unfocus(Client *c, int setfocus);
+void focus(Client *c);
+void showhide(Client *c);
 #endif

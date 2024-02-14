@@ -11,3 +11,4 @@ tags
 .ccls*
 .cache/*
 compile_commands.json
+builds/*

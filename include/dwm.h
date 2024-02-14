@@ -6,8 +6,11 @@
 // other
 //
 
+#define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
 extern int enablegaps;
 #define SPTAGMASK		(((1 << LENGTH(scratchpads))-1) << LENGTH(tags))
+#define NUMTAGS			(LENGTH(tags) + LENGTH(scratchpads))
+#define TAGMASK			((1 << NUMTAGS) - 1)
 
 #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
@@ -81,17 +84,11 @@ Client *nexttiled(Client *c);
 void resize(Client *c, int x, int y, int w, int h, int interact);
 void setup(void);
 void run(void);
-void scan(void);
-void cleanup(void);
 void runAutostart(void);
-void load_xresources(void);
 Client *wintoclient(Window w);
-void restack(Monitor *m);
-void setfullscreen(Client *c, int fullscreen);
 void seturgent(Client *c, int urg);
 void configure(Client *c);
 int updategeom(void);
-void resizeclient(Client *c, int x, int y, int w, int h);
 void updatebars(void);
 void drawbars(void);
 void drawbar(Monitor *m);
@@ -107,9 +104,14 @@ void updatewindowtype(Client *c);
 void updatewmhints(Client *c);
 void setclientstate(Client *c, long state);
 void updatenumlockmask(void);
+Client *termforwin(const Client *c);
+pid_t winpid(Window w);
+long getstate(Window w);
+void detachstack(Client *c);
+void detach(Client *c);
+void attach(Client *c);
+void attachstack(Client *c);
 
-void unfocus(Client *c, int setfocus);
-void focus(Client *c);
 Monitor *wintomon(Window w);
 extern void (*handler[LASTEvent]) (XEvent *);
 
