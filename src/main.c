@@ -29,6 +29,7 @@
 
 #include "util.h"
 #include "dwm.h"
+#include "x11manager.h"
 
 
 extern Display *dpy;
