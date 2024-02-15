@@ -18,7 +18,8 @@
 #include "x11manager.h"
 #include <X11/Xatom.h>
 #include <X11/Xproto.h>
-#include "dwm.h"
+// #include "dwm.h"
+#include "dwmAPI.h"
 #include "vanitygaps.h"
 #include <X11/XF86keysym.h>
 

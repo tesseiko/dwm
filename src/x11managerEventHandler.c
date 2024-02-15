@@ -22,6 +22,7 @@
 #include <X11/Xutil.h>
 #include "vanitygaps.h"
 #include <XF86keysym.h>
+#include "dwmAPI.h"
 #include "config.h"
 #include <signal.h>
 

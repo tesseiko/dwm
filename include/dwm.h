@@ -112,18 +112,19 @@ void sighup(int unused);
 void sigterm(int unused);
 void sigchld(int unused);
 void copyvalidchars(char *text, char *rawtext);
+Monitor *dirtomon(int dir);
+int getrootptr(int *x, int *y);
+void sendmon(Client *c, Monitor *m);
+#ifndef __OpenBSD__
+int getdwmblockspid(void);
+#endif
+void updatebarpos(Monitor *m);
+void pop(Client *);
 
 Monitor *wintomon(Window w);
 extern void (*handler[LASTEvent]) (XEvent *);
 
 
-// for config
-#define SYSTRAYTAG              1 << 18
-#define DOCKTAG                 1 << 19
-#define INC(X)                  ((X) + 2000)
-#define SPTAG(i)		((1 << 9) << (i))
-
-enum { SchemeNorm, SchemeSel }; /* color schemes */
 enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
@@ -133,78 +134,7 @@ enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
 
 
 
-typedef struct {
-	const char *class;
-	const char *instance;
-	const char *title;
-	unsigned int tags;
-	int isfloating;
-	int issticky;
-	int isterminal;
-	int noswallow;
-	int monitor;
-} Rule;
-
 void monocle(Monitor *m);
-void spawn(const Arg *arg);
-void shiftview(const Arg *arg);
-void shifttag(const Arg *arg);
-void togglescratch(const Arg *arg);
-void view(const Arg *arg);
-void toggleview(const Arg *arg);
-void focusstack(const Arg *arg);
-void pushstack(const Arg *arg);
-void tag(const Arg *arg);
-void toggletag(const Arg *arg);
-void killclient(const Arg *arg);
-void setlayout(const Arg *arg);
-void incnmaster(const Arg *arg);
-void togglesticky(const Arg *arg);
-void togglefullscr(const Arg *arg);
-void setmfact(const Arg *arg);
-void togglebar(const Arg *arg);
-void focusmon(const Arg *arg);
-void tagmon(const Arg *arg);
-void zoom(const Arg *arg);
-void togglefloating(const Arg *arg);
-void togglealwaysontop(const Arg *arg);
-void togglealwaysonback(const Arg *arg);
-void sigdwmblocks(const Arg *arg);
-void movemouse(const Arg *arg);
-void resizemouse(const Arg *arg);
-
-/* Xresources preferences */
-enum resource_type {
-    STRING = 0,
-    INTEGER = 1,
-    FLOAT = 2
-};
-
-
-typedef struct {
-	char *name;
-	enum resource_type type;
-	void *dst;
-} ResourcePref;
-
-enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
-       ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
-
-typedef struct {
-	unsigned int mod;
-	KeySym keysym;
-	void (*func)(const Arg *);
-	const Arg arg;
-} Key;
-
-typedef struct {
-	unsigned int click;
-	unsigned int mask;
-	unsigned int button;
-	void (*func)(const Arg *arg);
-	const Arg arg;
-} Button;
-
 
 #endif // DWM_H
 
