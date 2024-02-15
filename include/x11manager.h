@@ -58,4 +58,8 @@ void showhide(Client *c);
 Atom getatomprop(Client *c, Atom prop);
 int gettextprop(Window w, Atom atom, char *text, unsigned int size);
 void setup(void);
+void configure(Client *c);
+int sendevent(Client *c, Atom proto);
+int xerrordummy(Display *dpy, XErrorEvent *ee);
+void setclientstate(Client *c, long state);
 #endif

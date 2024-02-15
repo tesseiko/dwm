@@ -38,7 +38,7 @@ modes:
 	cp -r share/dwmmodes ${HOME}/.local/share/
 
 clean:
-	rm -f ${OBJ} dwm-${VERSION}.tar.gz *.orig *.rej
+	rm -f ${OBJ} dwm-${VERSION}.tar.gz *.orig *.rej compile_commands.json
 	rm -rf ${OBJ_DIR} ${BIN_DIR} builds
 dist: clean
 	mkdir -p dwm-${VERSION}
