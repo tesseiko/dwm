@@ -29,6 +29,7 @@ extern int enableoutergaps;
 extern Clr **scheme;
 extern Cur *cursor[CurLast];
 extern const char broken[];
+extern int screen;
 
 // extern static const char *spcmd2[];
 // extern static const char *spcmd2[];
@@ -54,4 +55,7 @@ void updateclientlist(void);
 void unfocus(Client *c, int setfocus);
 void focus(Client *c);
 void showhide(Client *c);
+Atom getatomprop(Client *c, Atom prop);
+int gettextprop(Window w, Atom atom, char *text, unsigned int size);
+void setup(void);
 #endif

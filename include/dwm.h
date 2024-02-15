@@ -82,7 +82,6 @@ struct Monitor {
 void arrange(Monitor *m);
 Client *nexttiled(Client *c);
 void resize(Client *c, int x, int y, int w, int h, int interact);
-void setup(void);
 void run(void);
 void runAutostart(void);
 Client *wintoclient(Window w);
@@ -111,6 +110,10 @@ void detachstack(Client *c);
 void detach(Client *c);
 void attach(Client *c);
 void attachstack(Client *c);
+void sighup(int unused);
+void sigterm(int unused);
+void sigchld(int unused);
+void copyvalidchars(char *text, char *rawtext);
 
 Monitor *wintomon(Window w);
 extern void (*handler[LASTEvent]) (XEvent *);
