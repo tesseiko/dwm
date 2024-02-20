@@ -13,10 +13,10 @@
 #include <X11/Xresource.h>
 #include "util.h"
 #include "drw.h"
+#include <X11/Xproto.h>
 #include "dwm.h"
 #include "x11manager.h"
 #include <X11/Xatom.h>
-#include <X11/Xproto.h>
 #include <X11/extensions/shape.h>
 #include <X11/cursorfont.h>
 #include <X11/Xutil.h>
@@ -32,11 +32,13 @@
 void
 manage(Window w, XWindowAttributes *wa)
 {
-	Client *c, *t = NULL, *term = NULL;
+	Client *c;
+	Client *t = NULL;
+	Client *term = NULL;
 	Window trans = None;
 	XWindowChanges wc;
 
-	c = ecalloc(1, sizeof(Client));
+	c = new Client;
 	c->win = w;
 	c->pid = winpid(w);
 	/* geometry */

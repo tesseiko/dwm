@@ -360,21 +360,25 @@ unmapnotify(XEvent *e)
 	}
 }
 
-void (*handler[LASTEvent]) (XEvent *) = {
-	[ButtonPress] = buttonpress,
-	[ClientMessage] = clientmessage,
-	[ConfigureRequest] = configurerequest,
-	[ConfigureNotify] = configurenotify,
-	[DestroyNotify] = destroynotify,
-	[EnterNotify] = enternotify,
-	[Expose] = expose,
-	[FocusIn] = focusin,
-	[KeyPress] = keypress,
-	[MappingNotify] = mappingnotify,
-	[MapRequest] = maprequest,
-	[MotionNotify] = motionnotify,
-	[PropertyNotify] = propertynotify,
-	[UnmapNotify] = unmapnotify
-};
+void (*handler[LASTEvent]) (XEvent *);
+
+void initHandlers()
+{
+	handler[ButtonPress] = buttonpress;
+	handler[ClientMessage] = clientmessage;
+	handler[ConfigureRequest] = configurerequest;
+	handler[ConfigureNotify] = configurenotify;
+	handler[DestroyNotify] = destroynotify;
+	handler[EnterNotify] = enternotify;
+	handler[Expose] = expose;
+	handler[FocusIn] = focusin;
+	handler[KeyPress] = keypress;
+	handler[MappingNotify] = mappingnotify;
+	handler[MapRequest] = maprequest;
+	handler[MotionNotify] = motionnotify;
+	handler[PropertyNotify] = propertynotify;
+	handler[UnmapNotify] = unmapnotify;
+}
+
 //==============================================================================
 

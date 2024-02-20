@@ -89,7 +89,7 @@ Atom wmatom[WMLast], netatom[NetLast];
 int restart = 0;
 int running = 1;
 Cur *cursor[CurLast];
-Clr **scheme;
+Clr *scheme[2];
 Display *dpy;
 Drw *drw;
 Monitor *mons;
@@ -230,7 +230,7 @@ createmon(void)
 {
 	Monitor *m;
 
-	m = ecalloc(1, sizeof(Monitor));
+	m = new Monitor;
 	m->tagset[0] = m->tagset[1] = 1;
 	m->mfact = mfact;
 	m->nmaster = nmaster;
@@ -535,9 +535,9 @@ updatebars(void)
 {
 	Monitor *m;
 	XSetWindowAttributes wa = {
-		.override_redirect = True,
-		.background_pixmap = ParentRelative,
-		.event_mask = ButtonPressMask|ExposureMask
+        .background_pixmap = ParentRelative,
+		.event_mask = ButtonPressMask|ExposureMask,
+        .override_redirect = True
 	};
 	XClassHint ch = {"dwm", "dwm"};
 	for (m = mons; m; m = m->next) {
@@ -580,7 +580,7 @@ updategeom(void)
 
 		for (n = 0, m = mons; m; m = m->next, n++);
 		/* only consider unique geometries as separate screens */
-		unique = ecalloc(nn, sizeof(XineramaScreenInfo));
+		unique = (XineramaScreenInfo *) ecalloc(nn, sizeof(XineramaScreenInfo));
 		for (i = 0, j = 0; i < nn; i++)
 			if (isuniquegeom(unique, j, &info[i]))
 				memcpy(&unique[j++], &info[i], sizeof(XineramaScreenInfo));

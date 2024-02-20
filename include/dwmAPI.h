@@ -73,7 +73,7 @@ typedef struct {
 } ResourcePref;
 
 typedef struct {
-	const char *class;
+	const char *wm_class;
 	const char *instance;
 	const char *title;
 	unsigned int tags;

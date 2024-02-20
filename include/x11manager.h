@@ -26,7 +26,7 @@ extern int sw, sh;           /* X display screen geometry width, height */
 extern Monitor *mons;
 extern int enablefullscreen;
 extern int enableoutergaps;
-extern Clr **scheme;
+extern Clr *scheme[2];
 extern Cur *cursor[CurLast];
 extern const char broken[];
 extern int screen;
@@ -62,4 +62,9 @@ void configure(Client *c);
 int sendevent(Client *c, Atom proto);
 int xerrordummy(Display *dpy, XErrorEvent *ee);
 void setclientstate(Client *c, long state);
+void initHandlers();
+void roundcorners(Client *c);
+void applyrules(Client *c);
+void grabbuttons(Client *c, int focused);
+void swallow(Client *p, Client *c);
 #endif

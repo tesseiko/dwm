@@ -201,7 +201,7 @@ unmanage(Client *c, int destroyed)
 void
 applyrules(Client *c)
 {
-	const char *class, *instance;
+	const char *wm_class, *instance;
 	unsigned int i;
 	const Rule *r;
 	Monitor *m;
@@ -211,13 +211,13 @@ applyrules(Client *c)
 	c->isfloating = 0;
 	c->tags = 0;
 	XGetClassHint(dpy, c->win, &ch);
-	class    = ch.res_class ? ch.res_class : broken;
+	wm_class    = ch.res_class ? ch.res_class : broken;
 	instance = ch.res_name  ? ch.res_name  : broken;
 
 	for (i = 0; i < LENGTH(rules); i++) {
 		r = &rules[i];
 		if ((!r->title || strstr(c->name, r->title))
-		&& (!r->class || strstr(class, r->class))
+		&& (!r->wm_class || strstr(wm_class, r->wm_class))
 		&& (!r->instance || strstr(instance, r->instance)))
 		{
 			c->issticky = r->issticky;

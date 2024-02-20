@@ -6,6 +6,7 @@
 // other
 //
 
+#include <sys/types.h>
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
 extern int enablegaps;
 #define SPTAGMASK		(((1 << LENGTH(scratchpads))-1) << LENGTH(tags))
@@ -21,7 +22,7 @@ extern int enablegaps;
 
 typedef union {
 	int i;
-	unsigned int ui;
+	int ui;
 	float f;
 	const void *v;
 } Arg;

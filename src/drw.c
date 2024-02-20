@@ -63,7 +63,8 @@ utf8decode(const char *c, long *u, size_t clen)
 Drw *
 drw_create(Display *dpy, int screen, Window root, unsigned int w, unsigned int h)
 {
-	Drw *drw = ecalloc(1, sizeof(Drw));
+	// Drw *drw = ecalloc(1, sizeof(Drw));
+	Drw *drw = new Drw;
 
 	drw->dpy = dpy;
 	drw->screen = screen;
@@ -132,7 +133,7 @@ xfont_create(Drw *drw, const char *fontname, FcPattern *fontpattern)
 		die("no font specified.");
 	}
 
-	font = ecalloc(1, sizeof(Fnt));
+	font = new Fnt;
 	font->xfont = xfont;
 	font->pattern = pattern;
 	font->h = xfont->ascent + xfont->descent;
@@ -153,7 +154,7 @@ xfont_free(Fnt *font)
 }
 
 Fnt*
-drw_fontset_create(Drw* drw, char *fonts[], size_t fontcount)
+drw_fontset_create(Drw* drw, const char *fonts[], size_t fontcount)
 {
 	Fnt *cur, *ret = NULL;
 	size_t i;
@@ -196,13 +197,17 @@ drw_clr_create(Drw *drw, Clr *dest, const char *clrname)
 /* Wrapper to create color schemes. The caller has to call free(3) on the
  * returned color scheme when done using it. */
 Clr *
-drw_scm_create(Drw *drw, char *clrnames[], size_t clrcount)
+drw_scm_create(Drw *drw, const char *clrnames[], size_t clrcount)
 {
 	size_t i;
 	Clr *ret;
 
 	/* need at least two colors for a scheme */
-	if (!drw || !clrnames || clrcount < 2 || !(ret = ecalloc(clrcount, sizeof(XftColor))))
+	if (!drw
+    || !clrnames
+    || clrcount < 2
+    || !(ret = new Clr))
+    // || !(ret = ecalloc(clrcount, sizeof(XftColor))))
 		return NULL;
 
 	for (i = 0; i < clrcount; i++)
@@ -405,7 +410,8 @@ drw_cur_create(Drw *drw, int shape)
 {
 	Cur *cur;
 
-	if (!drw || !(cur = ecalloc(1, sizeof(Cur))))
+	if (!drw
+    || !(cur = new Cur))
 		return NULL;
 
 	cur->cursor = XCreateFontCursor(drw->dpy, shape);

@@ -78,6 +78,7 @@ main(int argc, char *argv[])
 	if (!(xcon = XGetXCBConnection(dpy)))
 		die("dwm: cannot get xcb connection\n");
 	checkotherwm();
+    initHandlers();
 	XrmInitialize();
 	load_xresources();
 	setup();

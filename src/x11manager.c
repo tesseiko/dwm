@@ -96,9 +96,9 @@ resource_load(XrmDatabase db, char *name, enum resource_type rtype, void *dst)
 	int *idst = NULL;
 	float *fdst = NULL;
 
-	sdst = dst;
-	idst = dst;
-	fdst = dst;
+	sdst = (char *) dst;
+	idst = (int *) dst;
+	fdst = (float *) dst;
 
 	char fullname[256];
 	char *type;
@@ -255,7 +255,7 @@ setup(void)
 	sw = DisplayWidth(dpy, screen);
 	sh = DisplayHeight(dpy, screen);
 	root = RootWindow(dpy, screen);
-	drw = drw_create(dpy, screen, root, sw, sh);
+    drw = drw_create(dpy, screen, root, sw, sh);
 	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
 		die("no fonts could be loaded.");
 	lrpad = drw->fonts->h;
@@ -281,7 +281,9 @@ setup(void)
 	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
 	cursor[CurMove] = drw_cur_create(drw, XC_fleur);
 	/* init appearance */
-	scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
+    // scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
+    for (auto & sc : scheme)
+        sc = new Clr;
 	for (i = 0; i < LENGTH(colors); i++)
 		scheme[i] = drw_scm_create(drw, colors[i], 3);
 	/* init bars */
