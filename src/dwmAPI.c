@@ -69,7 +69,11 @@ focusstack(const Arg *arg)
 	if (i < 0 || !selmon->sel || selmon->sel->isfullscreen)
 		return;
 
-	for(p = NULL, c = selmon->clients; c && (i || !ISVISIBLE(c) || c->tags & (SYSTRAYTAG|DOCKTAG));
+	for(p = NULL, c = selmon->clients;
+        c
+        && (
+            (i || c->tags & (SYSTRAYTAG|DOCKTAG))
+            || !ISVISIBLE(c));
 	    i -= ISVISIBLE(c) ? 1 : 0, p = c, c = c->next);
 	focus(c ? c : p);
 	restack(selmon);
