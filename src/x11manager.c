@@ -251,10 +251,10 @@ setup(void)
 	signal(SIGTERM, sigterm);
 
 	/* init screen */
-	screen = DefaultScreen(dpy);
-	sw = DisplayWidth(dpy, screen);
-	sh = DisplayHeight(dpy, screen);
-	root = RootWindow(dpy, screen);
+	screen = DefaultScreen(dpy); // x11
+	sw = DisplayWidth(dpy, screen); // x11
+	sh = DisplayHeight(dpy, screen); //x11
+	root = RootWindow(dpy, screen); //x11
     drw = drw_create(dpy, screen, root, sw, sh);
 	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
 		die("no fonts could be loaded.");

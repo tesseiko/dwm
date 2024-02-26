@@ -33,6 +33,7 @@
 #include "dwm.h"
 #include "drw.h"
 #include "x11manager.h"
+#include "logger.h"
 
 
 extern Display *dpy;
@@ -67,6 +68,12 @@ checkotherwm(void)
 int
 main(int argc, char *argv[])
 {
+    logger log;
+    log.Print("slkdfjlkds");
+    log.Info("slkdfjlkds");
+    log.Warn("slkdfjlkds");
+    log.Error("slkdfjlkds");
+    exit(0);
 	if (argc == 2 && !strcmp("-v", argv[1]))
 		die("dwm-"VERSION);
 	else if (argc != 1)
