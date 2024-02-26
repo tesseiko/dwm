@@ -35,6 +35,7 @@
 #include "x11manager.h"
 #include "logger.h"
 
+logger l;
 
 extern Display *dpy;
 extern xcb_connection_t *xcon;
@@ -57,6 +58,7 @@ xerrorstart(Display *dpy, XErrorEvent *ee)
 void
 checkotherwm(void)
 {
+    l.Info("Checking if other window manager is running");
 	xerrorxlib = XSetErrorHandler(xerrorstart);
 	/* this causes an error if some other window manager is running */
 	XSelectInput(dpy, DefaultRootWindow(dpy), SubstructureRedirectMask);
@@ -65,15 +67,12 @@ checkotherwm(void)
 	XSync(dpy, False);
 }
 
+
 int
 main(int argc, char *argv[])
 {
-    logger log;
-    log.Print("slkdfjlkds");
-    log.Info("slkdfjlkds");
-    log.Warn("slkdfjlkds");
-    log.Error("slkdfjlkds");
-    exit(0);
+    l.Print("==================================================");
+    l.Info("Starting dwm");
 	if (argc == 2 && !strcmp("-v", argv[1]))
 		die("dwm-"VERSION);
 	else if (argc != 1)
@@ -85,7 +84,9 @@ main(int argc, char *argv[])
 	if (!(xcon = XGetXCBConnection(dpy)))
 		die("dwm: cannot get xcb connection\n");
 	checkotherwm();
+    l.Info("Initializing event handlers");
     initHandlers();
+    l.Info("Initializing event handlers");
 	XrmInitialize();
 	load_xresources();
 	setup();

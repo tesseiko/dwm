@@ -64,6 +64,7 @@ private:
     {
         auto now = std::chrono::system_clock::now();
         std::string formatted_time = std::format("{0:%F_%T}", now);
+        std::cout << rtrim(msg) << std::endl;
         myfile << formatted_time << ": " << rtrim(msg) << std::endl;
     }
 

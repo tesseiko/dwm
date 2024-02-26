@@ -25,7 +25,9 @@
 #include "dwmAPI.h"
 #include "config.h"
 #include <signal.h>
+#include "logger.h"
 
+extern logger l;
 #ifdef XINERAMA
 #include <X11/extensions/Xinerama.h>
 #endif /* XINERAMA */
@@ -127,6 +129,7 @@ resource_load(XrmDatabase db, char *name, enum resource_type rtype, void *dst)
 void
 load_xresources(void)
 {
+    l.Info("Loading XResources");
 	Display *display;
 	char *resm;
 	XrmDatabase db;
@@ -135,7 +138,10 @@ load_xresources(void)
 	display = XOpenDisplay(NULL);
 	resm = XResourceManagerString(display);
 	if (!resm)
-		return;
+    {
+        l.Warn("RESOURCE_MANAGER property not found (XResourceManagerString)");
+        return;
+    }
 
 	db = XrmGetStringDatabase(resm);
 	for (p = resources; p < resources + LENGTH(resources); p++)

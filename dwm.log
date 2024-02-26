@@ -1,14 +1,23 @@
 
-2024-02-26_09:25:47.314524977: slkdfjlkds
-2024-02-26_09:25:47.314590274: slkdfjlkds
-2024-02-26_09:25:47.314602611: slkdfjlkds
-2024-02-26_09:26:28.537711471: slkdfjlkds
-2024-02-26_09:26:28.537766414: slkdfjlkds
-2024-02-26_09:26:28.537776620: slkdfjlkds
-2024-02-26_09:26:53.740232751: slkdfjlkds
-2024-02-26_09:26:53.740290989: INFO: slkdfjlkds
-2024-02-26_09:26:53.740306129: WARNING: slkdfjlkds
-2024-02-26_09:27:30.279505805: slkdfjlkds
-2024-02-26_09:27:30.279594162: INFO: slkdfjlkds
-2024-02-26_09:27:30.279606838: WARNING: slkdfjlkds
-2024-02-26_09:27:30.279617733: ERROR: slkdfjlkds
+2024-02-26_09:39:19.643143658: ==================================================
+2024-02-26_09:39:19.643201255: INFO: Starting dwm
+2024-02-26_09:39:19.644829776: INFO: Checking if other window manager is running
+2024-02-26_09:39:31.156669956: ==================================================
+2024-02-26_09:39:31.156753484: INFO: Starting dwm
+2024-02-26_09:39:31.158176926: INFO: Checking if other window manager is running
+2024-02-26_09:52:53.639469360: ==================================================
+2024-02-26_09:52:53.639537315: INFO: Starting dwm
+2024-02-26_09:52:53.641928342: INFO: Checking if other window manager is running
+2024-02-26_09:52:59.647069419: ==================================================
+2024-02-26_09:52:59.647188320: INFO: Starting dwm
+2024-02-26_09:52:59.649478506: INFO: Checking if other window manager is running
+2024-02-26_09:52:59.649599210: INFO: Initializing event handlers
+2024-02-26_09:57:03.665230048: ==================================================
+2024-02-26_09:57:03.665321384: INFO: Starting dwm
+2024-02-26_09:57:03.667178854: INFO: Checking if other window manager is running
+2024-02-26_09:57:03.667295695: INFO: Initializing event handlers
+2024-02-26_09:57:03.667318284: INFO: Initializing event handlers
+2024-02-26_09:57:03.667340693: INFO: Loading XResources
+2024-02-26_09:57:03.667763194: WARNING: RESOURCE_MANAGER property not found (XResourceManagerString)
+2024-02-26_10:01:29.959390084: ==================================================
+2024-02-26_10:01:29.959520559: INFO: Starting dwm
