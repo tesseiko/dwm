@@ -4,6 +4,7 @@
 #include "dwm.h"
 #include "util.h"
 #include "vanitygaps.h"
+#include "dwmAPI.h"
 /* Settings */
 int enablegaps = 1;
 
@@ -23,20 +24,20 @@ setgaps(int oh, int ov, int ih, int iv)
 }
 
 void
-togglegaps(const Arg *arg)
+dwmAPI::togglegaps(const Arg *arg)
 {
 	enablegaps = !enablegaps;
 	arrange(NULL);
 }
 
 void
-defaultgaps(const Arg *arg)
+dwmAPI::defaultgaps(const Arg *arg)
 {
 	setgaps(gappoh, gappov, gappih, gappiv);
 }
 
 void
-incrgaps(const Arg *arg)
+dwmAPI::incrgaps(const Arg *arg)
 {
 	setgaps(
 		selmon->gappoh + arg->i,

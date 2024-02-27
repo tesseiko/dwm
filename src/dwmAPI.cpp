@@ -7,7 +7,6 @@
  
  ==============================================================================
  */
-#pragma once
 
 #include <errno.h>
 #include <locale.h>
@@ -26,8 +25,8 @@
 #include "drw.h"
 #include "util.h"
 #include "dwm.h"
-#include "dwmAPI.h"
 #include "x11manager.h"
+#include "dwmAPI.h"
 /* macros */
 #define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
                                * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
@@ -42,17 +41,18 @@
 #include <XF86keysym.h>
 #include "vanitygaps.h"
 #include "config.h"
+#include "dwmAPI.h"
 
 extern int restart;
 extern int running;
 extern pid_t dwmblockspid;
 
 void
-focusmon(const Arg *arg)
+dwmAPI::focusmon(const Arg *arg)
 {
 	Monitor *m;
 
-	if (!mons->next)
+	if (!winMan.mons->next)
 		return;
 	if ((m = dirtomon(arg->i)) == selmon)
 		return;
@@ -62,7 +62,7 @@ focusmon(const Arg *arg)
 }
 
 void
-focusstack(const Arg *arg)
+dwmAPI::focusstack(const Arg *arg)
 {
 	int i = stackpos(arg);
 	Client *c, *p;
@@ -82,14 +82,14 @@ focusstack(const Arg *arg)
 }
 
 void
-incnmaster(const Arg *arg)
+dwmAPI::incnmaster(const Arg *arg)
 {
 	selmon->nmaster = MAX(selmon->nmaster + arg->i, 0);
 	arrange(selmon);
 }
 
 void
-movemouse(const Arg *arg)
+dwmAPI::movemouse(const Arg *arg)
 {
 	int x, y, ocx, ocy, nx, ny;
 	Client *c;
@@ -149,7 +149,7 @@ movemouse(const Arg *arg)
 }
 
 void
-pushstack(const Arg *arg) {
+dwmAPI::pushstack(const Arg *arg) {
 	int i = stackpos(arg);
 	Client *sel = selmon->sel, *c, *p;
 
@@ -172,14 +172,14 @@ pushstack(const Arg *arg) {
 }
 
 void
-quit(const Arg *arg)
+dwmAPI::quit(const Arg *arg)
 {
 	if(arg->i) restart = 1;
 	running = 0;
 }
 
 void
-resizemouse(const Arg *arg)
+dwmAPI::resizemouse(const Arg *arg)
 {
 	int ocx, ocy, nw, nh;
 	Client *c;
@@ -236,7 +236,8 @@ resizemouse(const Arg *arg)
 }
 
 int
-stackpos(const Arg *arg) {
+dwmAPI::stackpos(const Arg *arg)
+{
 	int n, i;
 	Client *c, *l;
 
@@ -266,7 +267,7 @@ stackpos(const Arg *arg) {
 }
 
 void
-setlayout(const Arg *arg)
+dwmAPI::setlayout(const Arg *arg)
 {
 	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
 		selmon->sellt ^= 1;
@@ -281,7 +282,7 @@ setlayout(const Arg *arg)
 
 /* arg > 1.0 will set mfact absolutely */
 void
-setmfact(const Arg *arg)
+dwmAPI::setmfact(const Arg *arg)
 {
 	float f;
 
@@ -296,7 +297,7 @@ setmfact(const Arg *arg)
 
 #ifndef __OpenBSD__
 void
-sigdwmblocks(const Arg *arg)
+dwmAPI::sigdwmblocks(const Arg *arg)
 {
 	union sigval sv;
 	sv.sival_int = 0 | (dwmblockssig << 8) | arg->i;
@@ -314,7 +315,7 @@ sigdwmblocks(const Arg *arg)
 #endif
 
 void
-spawn(const Arg *arg)
+dwmAPI::spawn(const Arg *arg)
 {
 	if (fork() == 0) {
 		if (dpy)
@@ -333,7 +334,7 @@ spawn(const Arg *arg)
  *          or left (negative value)
  */
 void
-shiftview(const Arg *arg)
+dwmAPI::shiftview(const Arg *arg)
 {
 	Arg shifted;
 	Client *c;
@@ -361,7 +362,7 @@ shiftview(const Arg *arg)
 }
 
 void
-shifttag(const Arg *arg)
+dwmAPI::shifttag(const Arg *arg)
 {
 	Arg a;
 	Client *c;
@@ -392,7 +393,7 @@ shifttag(const Arg *arg)
 	}
 }
 void
-tag(const Arg *arg)
+dwmAPI::tag(const Arg *arg)
 {
 	if (selmon->sel && arg->ui & TAGMASK) {
 		selmon->sel->tags = arg->ui & TAGMASK;
@@ -402,7 +403,7 @@ tag(const Arg *arg)
 }
 
 void
-tagmon(const Arg *arg)
+dwmAPI::tagmon(const Arg *arg)
 {
 	if (!selmon->sel || !mons->next)
 		return;
@@ -410,7 +411,7 @@ tagmon(const Arg *arg)
 }
 
 void
-togglebar(const Arg *arg)
+dwmAPI::togglebar(const Arg *arg)
 {
 	selmon->showbar = !selmon->showbar;
 	updatebarpos(selmon);
@@ -419,7 +420,7 @@ togglebar(const Arg *arg)
 }
 
 void
-togglefloating(const Arg *arg)
+dwmAPI::togglefloating(const Arg *arg)
 {
 	if (!selmon->sel)
 		return;
@@ -435,7 +436,7 @@ togglefloating(const Arg *arg)
 }
 
 void
-togglealwaysonback(const Arg *arg)
+dwmAPI::togglealwaysonback(const Arg *arg)
 {
 	if (!selmon->sel)
 		return;
@@ -447,7 +448,7 @@ togglealwaysonback(const Arg *arg)
 }
 
 void
-togglealwaysontop(const Arg *arg)
+dwmAPI::togglealwaysontop(const Arg *arg)
 {
 	if (!selmon->sel)
 		return;
@@ -469,14 +470,14 @@ togglealwaysontop(const Arg *arg)
 }
 
 void
-togglefullscr(const Arg *arg)
+dwmAPI::togglefullscr(const Arg *arg)
 {
   if(selmon->sel)
     selmon->sel->setfullscreen(!selmon->sel->isfullscreen);
 }
 
 void
-togglesticky(const Arg *arg)
+dwmAPI::togglesticky(const Arg *arg)
 {
 	if (!selmon->sel)
 		return;
@@ -485,7 +486,7 @@ togglesticky(const Arg *arg)
 }
 
 void
-togglescratch(const Arg *arg)
+dwmAPI::togglescratch(const Arg *arg)
 {
 	Client *c;
 	unsigned int found = 0;
@@ -511,7 +512,7 @@ togglescratch(const Arg *arg)
 }
 
 void
-toggletag(const Arg *arg)
+dwmAPI::toggletag(const Arg *arg)
 {
 	unsigned int newtags;
 
@@ -526,7 +527,7 @@ toggletag(const Arg *arg)
 }
 
 void
-toggleview(const Arg *arg)
+dwmAPI::toggleview(const Arg *arg)
 {
 	unsigned int newtagset = selmon->tagset[selmon->seltags] ^ (arg->ui & TAGMASK);
 
@@ -538,7 +539,7 @@ toggleview(const Arg *arg)
 }
 
 void
-view(const Arg *arg)
+dwmAPI::view(const Arg *arg)
 {
 	if ((arg->ui & TAGMASK) == selmon->tagset[selmon->seltags])
 		return;
@@ -550,7 +551,7 @@ view(const Arg *arg)
 }
 
 void
-zoom(const Arg *arg)
+dwmAPI::zoom(const Arg *arg)
 {
 	Client *c = selmon->sel;
 

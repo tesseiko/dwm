@@ -158,7 +158,7 @@ xerrordummy(Display *dpy, XErrorEvent *ee)
 }
 
 void
-killclient(const Arg *arg)
+dwmAPI::killclient(const Arg *arg)
 {
 	if (!selmon->sel)
 		return;

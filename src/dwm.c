@@ -52,12 +52,6 @@
 
 // Monitor *selmon;
 // config quick patches
-int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
-unsigned int gappih    = 20;       /* horiz inner gap between windows */
-unsigned int gappiv    = 10;       /* vert inner gap between windows */
-unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-unsigned int gappov    = 30;       /* vert outer gap between windows and screen edge */
-
 /* function declarations */
 static void arrangemon(Monitor *m);
 static Monitor *createmon(void);

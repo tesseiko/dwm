@@ -24,13 +24,6 @@ extern int enablegaps;
 #define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
 #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]) || C->issticky)
 
-typedef union {
-	int i;
-	int ui;
-	float f;
-	const void *v;
-} Arg;
-
 void arrange(Monitor *m);
 void run(void);
 void runAutostart(void);
