@@ -6,6 +6,8 @@
 // other
 //
 
+#include "X.h"
+#include "Xproto.h"
 #include <sys/types.h>
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
 extern int enablegaps;
@@ -13,6 +15,8 @@ extern int enablegaps;
 #define NUMTAGS			(LENGTH(tags) + LENGTH(scratchpads))
 #define TAGMASK			((1 << NUMTAGS) - 1)
 
+#include "Monitor.h"
+#include "Client.h"
 #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
 
@@ -27,62 +31,7 @@ typedef union {
 	const void *v;
 } Arg;
 
-typedef struct Client Client;
-typedef struct Monitor Monitor;
-
-struct Client {
-	char name[256];
-	float mina, maxa;
-	int x, y, w, h;
-	int oldx, oldy, oldw, oldh;
-	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
-	int bw, oldbw;
-	unsigned int tags;
-	int isfixed, isfloating, isurgent, 
-		neverfocus, oldstate, isfullscreen, 
-		isterminal, noswallow, issticky, isalwaysontop, isalwaysonbackground;
-	pid_t pid;
-	Client *next;
-	Client *snext;
-	Client *swallowing;
-	Monitor *mon;
-	Window win;
-};
-
-typedef struct {
-	const char *symbol;
-	void (*arrange)(Monitor *);
-} Layout;
-
-struct Monitor {
-	char ltsymbol[16];
-	float mfact;
-	int nmaster;
-	int num;
-	int by;               /* bar geometry */
-	int mx, my, mw, mh;   /* screen size */
-	int wx, wy, ww, wh;   /* window area  */
-	int gappih;           /* horizontal gap between windows */
-	int gappiv;           /* vertical gap between windows */
-	int gappoh;           /* horizontal outer gaps */
-	int gappov;           /* vertical outer gaps */
-	unsigned int seltags;
-	unsigned int sellt;
-	unsigned int tagset[2];
-	int showbar;
-	int topbar;
-	Client *clients;
-	Client *sel;
-	Client *stack;
-	Monitor *next;
-	Window barwin;
-	const Layout *lt[2];
-};
-
-
 void arrange(Monitor *m);
-Client *nexttiled(Client *c);
-void resize(Client *c, int x, int y, int w, int h, int interact);
 void run(void);
 void runAutostart(void);
 Client *wintoclient(Window w);
@@ -105,10 +54,6 @@ void updatenumlockmask(void);
 Client *termforwin(const Client *c);
 pid_t winpid(Window w);
 long getstate(Window w);
-void detachstack(Client *c);
-void detach(Client *c);
-void attach(Client *c);
-void attachstack(Client *c);
 void sighup(int unused);
 void sigterm(int unused);
 void sigchld(int unused);
@@ -120,7 +65,6 @@ void sendmon(Client *c, Monitor *m);
 int getdwmblockspid(void);
 #endif
 void updatebarpos(Monitor *m);
-void pop(Client *);
 
 Monitor *wintomon(Window w);
 extern void (*handler[LASTEvent]) (XEvent *);

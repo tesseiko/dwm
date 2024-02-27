@@ -14,11 +14,12 @@
 #include <X11/Xft/Xft.h>
 #include "util.h"
 #include "drw.h"
-#include "dwm.h"
+#include "Monitor.h"
+#include "Client.h"
+// #include "dwm.h"
 #include "x11manager.h"
 #include <X11/Xatom.h>
 #include <X11/Xproto.h>
-// #include "dwm.h"
 #include "dwmAPI.h"
 #include "vanitygaps.h"
 #include <X11/XF86keysym.h>

@@ -25,12 +25,13 @@
 #include "dwmAPI.h"
 #include "config.h"
 #include <signal.h>
+#include "wm.h"
 
 #ifdef XINERAMA
 #include <X11/extensions/Xinerama.h>
 #endif /* XINERAMA */
 void
-manage(Window w, XWindowAttributes *wa)
+wm::manage(Window w, XWindowAttributes *wa)
 {
 	Client *c;
 	Client *t = NULL;

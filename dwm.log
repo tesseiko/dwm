@@ -21,3 +21,11 @@
 2024-02-26_09:57:03.667763194: WARNING: RESOURCE_MANAGER property not found (XResourceManagerString)
 2024-02-26_10:01:29.959390084: ==================================================
 2024-02-26_10:01:29.959520559: INFO: Starting dwm
+2024-02-26_10:45:05.849309538: ==================================================
+2024-02-26_10:45:05.849366896: INFO: Starting dwm
+2024-02-26_10:45:05.851053876: INFO: Checking if other window manager is running
+2024-02-26_10:45:05.851213011: INFO: Initializing event handlers
+2024-02-26_10:45:05.851277675: INFO: Initializing event handlers
+2024-02-26_10:45:05.851304309: INFO: Loading XResources
+2024-02-26_10:45:05.851789074: WARNING: RESOURCE_MANAGER property not found (XResourceManagerString)
+2024-02-26_10:45:05.851817863: INFO: Setup

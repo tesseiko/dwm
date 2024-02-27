@@ -14,6 +14,7 @@
 #include "util.h"
 #include "drw.h"
 #include "dwm.h"
+#include "wm.h"
 #include "x11manager.h"
 #include <X11/Xatom.h>
 #include <X11/Xproto.h>
@@ -35,9 +36,8 @@
  * XEvent handler
  *
  * */
-
 void
-buttonpress(XEvent *e)
+event_handler::buttonpress(XEvent *e)
 {
 	unsigned int i, x, click, occ = 0;
 	Arg arg = {0};
@@ -47,12 +47,12 @@ buttonpress(XEvent *e)
 
 	click = ClkRootWin;
 	/* focus monitor if necessary */
-	if ((m = wintomon(ev->window)) && m != selmon) {
-		unfocus(selmon->sel, 1);
-		selmon = m;
+	if ((m = wintomon(ev->window)) && m != winMan.selmon) {
+		winMan.selmon->sel->unfocus(1);
+		winMan.selmon = m;
 		focus(NULL);
 	}
-	if (ev->window == selmon->barwin) {
+	if (ev->window == winMan.selmon->barwin) {
 		i = x = 0;
 		for (c = m->clients; c; c = c->next)
 			occ |= c->tags == 255 ? 0 : c->tags;
@@ -68,7 +68,7 @@ buttonpress(XEvent *e)
         } 
         else if (ev->x < x + blw)
             click = ClkLtSymbol;
-        else if (ev->x > (x = selmon->ww - TEXTW(stext) + lrpad)) {
+        else if (ev->x > (x = winMan.selmon->ww - TEXTW(stext) + lrpad)) {
             click = ClkStatusText;
 
 			char *text = rawstext;
@@ -91,7 +91,7 @@ buttonpress(XEvent *e)
 			click = ClkWinTitle;
 	} else if ((c = wintoclient(ev->window))) {
 		focus(c);
-		restack(selmon);
+		restack(winMan.selmon);
 		XAllowEvents(dpy, ReplayPointer, CurrentTime);
 		click = ClkClientWin;
 	}
@@ -102,7 +102,7 @@ buttonpress(XEvent *e)
 }
 
 void
-clientmessage(XEvent *e)
+event_handler::clientmessage(XEvent *e)
 {
 	XClientMessageEvent *cme = &e->xclient;
 	Client *c = wintoclient(cme->window);
@@ -115,13 +115,13 @@ clientmessage(XEvent *e)
 			setfullscreen(c, (cme->data.l[0] == 1 /* _NET_WM_STATE_ADD    */
 				|| (cme->data.l[0] == 2 /* _NET_WM_STATE_TOGGLE */ && !c->isfullscreen)));
 	} else if (cme->message_type == netatom[NetActiveWindow]) {
-		if (c != selmon->sel && !c->isurgent)
+		if (c != winMan.selmon->sel && !c->isurgent)
 			seturgent(c, 1);
 	}
 }
 
 void
-configurerequest(XEvent *e)
+event_handler::configurerequest(XEvent *e)
 {
 	Client *c;
 	Monitor *m;
@@ -131,7 +131,7 @@ configurerequest(XEvent *e)
     if ((c = wintoclient(ev->window))) {
         if (ev->value_mask & CWBorderWidth)
 			c->bw = ev->border_width;
-		else if (c->isfloating || !selmon->lt[selmon->sellt]->arrange) {
+		else if (c->isfloating || !winMan.selmon->lt[winMan.selmon->sellt]->arrange) {
 			m = c->mon;
 			if (ev->value_mask & CWX) {
 				c->oldx = c->x;
@@ -173,7 +173,7 @@ configurerequest(XEvent *e)
 }
 
 void
-configurenotify(XEvent *e)
+event_handler::configurenotify(XEvent *e)
 {
 	Monitor *m;
 	Client *c;
@@ -201,7 +201,7 @@ configurenotify(XEvent *e)
 }
 
 void
-destroynotify(XEvent *e)
+event_handler::destroynotify(XEvent *e)
 {
 	Client *c;
 	XDestroyWindowEvent *ev = &e->xdestroywindow;
@@ -213,7 +213,7 @@ destroynotify(XEvent *e)
 }
 
 void
-enternotify(XEvent *e)
+event_handler::enternotify(XEvent *e)
 {
 	Client *c;
 	Monitor *m;
@@ -223,16 +223,16 @@ enternotify(XEvent *e)
 		return;
 	c = wintoclient(ev->window);
 	m = c ? c->mon : wintomon(ev->window);
-	if (m != selmon) {
-		unfocus(selmon->sel, 1);
-		selmon = m;
-	} else if (!c || c == selmon->sel)
+	if (m != winMan.selmon) {
+		unfocus(winMan.selmon->sel, 1);
+		winMan.selmon = m;
+	} else if (!c || c == winMan.selmon->sel)
 		return;
 	focus(c);
 }
 
 void
-expose(XEvent *e)
+event_handler::expose(XEvent *e)
 {
 	Monitor *m;
 	XExposeEvent *ev = &e->xexpose;
@@ -244,16 +244,16 @@ expose(XEvent *e)
 
 /* there are some broken focus acquiring clients needing extra handling */
 void
-focusin(XEvent *e)
+event_handler::focusin(XEvent *e)
 {
 	XFocusChangeEvent *ev = &e->xfocus;
 
-	if (selmon->sel && ev->window != selmon->sel->win)
-		setfocus(selmon->sel);
+	if (winMan.selmon->sel && ev->window != winMan.selmon->sel->win)
+		setfocus(winMan.selmon->sel);
 }
 
 void
-keypress(XEvent *e)
+event_handler::keypress(XEvent *e)
 {
 	unsigned int i;
 	KeySym keysym;
@@ -269,7 +269,7 @@ keypress(XEvent *e)
 }
 
 void
-mappingnotify(XEvent *e)
+event_handler::mappingnotify(XEvent *e)
 {
 	XMappingEvent *ev = &e->xmapping;
 
@@ -279,7 +279,7 @@ mappingnotify(XEvent *e)
 }
 
 void
-maprequest(XEvent *e)
+event_handler::maprequest(XEvent *e)
 {
 	static XWindowAttributes wa;
 	XMapRequestEvent *ev = &e->xmaprequest;
@@ -293,7 +293,7 @@ maprequest(XEvent *e)
 }
 
 void
-motionnotify(XEvent *e)
+event_handler::motionnotify(XEvent *e)
 {
 	static Monitor *mon = NULL;
 	Monitor *m;
@@ -302,15 +302,15 @@ motionnotify(XEvent *e)
 	if (ev->window != root)
 		return;
 	if ((m = recttomon(ev->x_root, ev->y_root, 1, 1)) != mon && mon) {
-		unfocus(selmon->sel, 1);
-		selmon = m;
+		unfocus(winMan.selmon->sel, 1);
+		winMan.selmon = m;
 		focus(NULL);
 	}
 	mon = m;
 }
 
 void
-propertynotify(XEvent *e)
+event_handler::propertynotify(XEvent *e)
 {
 	Client *c;
 	Window trans;
@@ -347,7 +347,7 @@ propertynotify(XEvent *e)
 }
 
 void
-unmapnotify(XEvent *e)
+event_handler::unmapnotify(XEvent *e)
 {
 	Client *c;
 	XUnmapEvent *ev = &e->xunmap;
@@ -360,24 +360,22 @@ unmapnotify(XEvent *e)
 	}
 }
 
-void (*handler[LASTEvent]) (XEvent *);
-
-void initHandlers()
+event_handler::event_handler(wm &w) : winMan(w)
 {
-	handler[ButtonPress] = buttonpress;
-	handler[ClientMessage] = clientmessage;
-	handler[ConfigureRequest] = configurerequest;
-	handler[ConfigureNotify] = configurenotify;
-	handler[DestroyNotify] = destroynotify;
-	handler[EnterNotify] = enternotify;
-	handler[Expose] = expose;
-	handler[FocusIn] = focusin;
-	handler[KeyPress] = keypress;
-	handler[MappingNotify] = mappingnotify;
-	handler[MapRequest] = maprequest;
-	handler[MotionNotify] = motionnotify;
-	handler[PropertyNotify] = propertynotify;
-	handler[UnmapNotify] = unmapnotify;
+	handler[ButtonPress] = &event_handler::buttonpress;
+	handler[ClientMessage] = &event_handler::clientmessage;
+	handler[ConfigureRequest] = &event_handler::configurerequest;
+	handler[ConfigureNotify] = &event_handler::configurenotify;
+	handler[DestroyNotify] = &event_handler::destroynotify;
+	handler[EnterNotify] = &event_handler::enternotify;
+	handler[Expose] = &event_handler::expose;
+	handler[FocusIn] = &event_handler::focusin;
+	handler[KeyPress] = &event_handler::keypress;
+	handler[MappingNotify] = &event_handler::mappingnotify;
+	handler[MapRequest] = &event_handler::maprequest;
+	handler[MotionNotify] = &event_handler::motionnotify;
+	handler[PropertyNotify] = &event_handler::propertynotify;
+	handler[UnmapNotify] = &event_handler::unmapnotify;
 }
 
 //==============================================================================

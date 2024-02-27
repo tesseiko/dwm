@@ -40,6 +40,7 @@
 #include "dwm.h"
 #include "dwmAPI.h"
 #include "x11manager.h"
+#include "wm.h"
 /* macros */
 #define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
                                * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
@@ -49,7 +50,7 @@
 #define MOD(N,M)                ((N)%(M) < 0 ? (N)%(M) + (M) : (N)%(M))
 #define TRUNC(X,A,B)            (MAX((A), MIN((X), (B))))
 
-Monitor *selmon;
+// Monitor *selmon;
 // config quick patches
 int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 unsigned int gappih    = 20;       /* horiz inner gap between windows */
@@ -58,7 +59,6 @@ unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen
 unsigned int gappov    = 30;       /* vert outer gap between windows and screen edge */
 
 /* function declarations */
-static int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact);
 static void arrangemon(Monitor *m);
 static Monitor *createmon(void);
 int enablefullscreen = 0;
@@ -75,7 +75,6 @@ static int isdescprocess(pid_t p, pid_t c);
 
 
 /* variables */
-const char broken[] = "broken";
 char stext[256];
 char rawstext[256];
 int dwmblockssig;
@@ -106,79 +105,13 @@ xcb_connection_t *xcon;
 /* compile-time check if all tags fit into an unsigned int bit array. */
 struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
 
-int
-applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact)
-{
-	int baseismin;
-	Monitor *m = c->mon;
-
-	/* set minimum possible */
-	*w = MAX(1, *w);
-	*h = MAX(1, *h);
-	if (interact) {
-		if (*x > sw)
-			*x = sw - WIDTH(c);
-		if (*y > sh)
-			*y = sh - HEIGHT(c);
-		if (*x + *w + 2 * c->bw < 0)
-			*x = 0;
-		if (*y + *h + 2 * c->bw < 0)
-			*y = 0;
-	} else {
-		if (*x >= m->wx + m->ww)
-			*x = m->wx + m->ww - WIDTH(c);
-		if (*y >= m->wy + m->wh)
-			*y = m->wy + m->wh - HEIGHT(c);
-		if (*x + *w + 2 * c->bw <= m->wx)
-			*x = m->wx;
-		if (*y + *h + 2 * c->bw <= m->wy)
-			*y = m->wy;
-	}
-	if (*h < bh)
-		*h = bh;
-	if (*w < bh)
-		*w = bh;
-	if (resizehints || c->isfloating || !c->mon->lt[c->mon->sellt]->arrange) {
-		/* see last two sentences in ICCCM 4.1.2.3 */
-		baseismin = c->basew == c->minw && c->baseh == c->minh;
-		if (!baseismin) { /* temporarily remove base dimensions */
-			*w -= c->basew;
-			*h -= c->baseh;
-		}
-		/* adjust for aspect limits */
-		if (c->mina > 0 && c->maxa > 0) {
-			if (c->maxa < (float)*w / *h)
-				*w = *h * c->maxa + 0.5;
-			else if (c->mina < (float)*h / *w)
-				*h = *w * c->mina + 0.5;
-		}
-		if (baseismin) { /* increment calculation requires this */
-			*w -= c->basew;
-			*h -= c->baseh;
-		}
-		/* adjust for increment value */
-		if (c->incw)
-			*w -= *w % c->incw;
-		if (c->inch)
-			*h -= *h % c->inch;
-		/* restore base dimensions */
-		*w = MAX(*w + c->basew, c->minw);
-		*h = MAX(*h + c->baseh, c->minh);
-		if (c->maxw)
-			*w = MIN(*w, c->maxw);
-		if (c->maxh)
-			*h = MIN(*h, c->maxh);
-	}
-	return *x != c->x || *y != c->y || *w != c->w || *h != c->h;
-}
-
 void
 arrange(Monitor *m)
 {
 	if (m)
-		showhide(m->stack);
+		m->stack->showhide();
 	else for (m = mons; m; m = m->next)
-		showhide(m->stack);
+		m->stack->showhide();
 	if (m) {
 		arrangemon(m);
 		restack(m);
@@ -192,24 +125,6 @@ arrangemon(Monitor *m)
 	strncpy(m->ltsymbol, m->lt[m->sellt]->symbol, sizeof m->ltsymbol);
 	if (m->lt[m->sellt]->arrange)
 		m->lt[m->sellt]->arrange(m);
-}
-
-void
-attach(Client *c)
-{
-    c->next = c->mon->clients;
-    c->mon->clients = c;
-}
-
-void
-attachstack(Client *c)
-{
-    if (c->tags & (DOCKTAG | SYSTRAYTAG))
-        return;
-
-    fprintf(stderr, "Stacking %s tag:%d\n", c->name, c->tags);
-    c->snext = c->mon->stack;
-    c->mon->stack = c;
 }
 
 void
@@ -246,32 +161,8 @@ createmon(void)
 	return m;
 }
 
-void
-detach(Client *c)
-{
-	Client **tc;
-
-	for (tc = &c->mon->clients; *tc && *tc != c; tc = &(*tc)->next);
-
-    *tc = c->next;
-}
-
-void
-detachstack(Client *c)
-{
-	Client **tc, *t;
-
-	for (tc = &c->mon->stack; *tc && *tc != c; tc = &(*tc)->snext);
-	*tc = c->snext;
-
-	if (c == c->mon->sel) {
-		for (t = c->mon->stack; t && !ISVISIBLE(t); t = t->snext);
-		c->mon->sel = t;
-	}
-}
-
 Monitor *
-dirtomon(int dir)
+wm::dirtomon(int dir)
 {
 	Monitor *m = NULL;
 
@@ -286,7 +177,7 @@ dirtomon(int dir)
 }
 
 void
-drawbar(Monitor *m)
+wm::drawbar(Monitor *m)
 {
 	int x, w, tw = 0;
 	int boxs = drw->fonts->h / 9;
@@ -416,29 +307,8 @@ monocle(Monitor *m)
 		resize(c, m->wx + ov, m->wy + oh, m->ww - 2 * c->bw - 2 * ov, m->wh - 2 * c->bw - 2 * oh, 0);
 }
 
-Client *
-nexttiled(Client *c)
-{
-	for (; c && (c->isfloating || !ISVISIBLE(c)); c = c->next);
-	return c;
-}
-
-void
-pop(Client *c)
-{
-    /*  
-     * TODO: look her for stack refactoring
-     *
-     *
-     * */
-	detach(c);
-	attach(c);
-	focus(c);
-	arrange(c->mon);
-}
-
 Monitor *
-recttomon(int x, int y, int w, int h)
+wm::recttomon(int x, int y, int w, int h)
 {
 	Monitor *m, *r = selmon;
 	int a, area = 0;
@@ -449,13 +319,6 @@ recttomon(int x, int y, int w, int h)
 			r = m;
 		}
 	return r;
-}
-
-void
-resize(Client *c, int x, int y, int w, int h, int interact)
-{
-	if (applysizehints(c, &x, &y, &w, &h, interact))
-		resizeclient(c, x, y, w, h);
 }
 
 void
@@ -566,7 +429,7 @@ updatebarpos(Monitor *m)
 }
 
 int
-updategeom(void)
+wm::updategeom(void)
 {
 	int dirty = 0;
 
@@ -820,7 +683,7 @@ wintoclient(Window w)
 }
 
 Monitor *
-wintomon(Window w)
+wm::wintomon(Window w)
 {
 	int x, y;
 	Client *c;

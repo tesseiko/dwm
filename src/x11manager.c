@@ -246,6 +246,7 @@ updateclientlist(void)
 void
 setup(void)
 {
+    l.Info("Setup");
 	int i;
 	XSetWindowAttributes wa;
 	Atom utf8string;

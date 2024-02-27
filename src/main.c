@@ -32,6 +32,7 @@
 #include "util.h"
 #include "dwm.h"
 #include "drw.h"
+#include "wm.h"
 #include "x11manager.h"
 #include "logger.h"
 
@@ -85,6 +86,8 @@ main(int argc, char *argv[])
 		die("dwm: cannot get xcb connection\n");
 	checkotherwm();
     l.Info("Initializing event handlers");
+    wm winMan;
+    event_handler ev(winMan);
     initHandlers();
     l.Info("Initializing event handlers");
 	XrmInitialize();

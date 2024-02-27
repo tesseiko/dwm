@@ -7,6 +7,7 @@
  
  ==============================================================================
  */
+#pragma once
 
 #include <errno.h>
 #include <locale.h>
@@ -55,9 +56,9 @@ focusmon(const Arg *arg)
 		return;
 	if ((m = dirtomon(arg->i)) == selmon)
 		return;
-	unfocus(selmon->sel, 0);
+	selmon->sel->unfocus(0);
 	selmon = m;
-	focus(NULL);
+	selmon->stack->focus();
 }
 
 void
@@ -75,7 +76,8 @@ focusstack(const Arg *arg)
             (i || c->tags & (SYSTRAYTAG|DOCKTAG))
             || !ISVISIBLE(c));
 	    i -= ISVISIBLE(c) ? 1 : 0, p = c, c = c->next);
-	focus(c ? c : p);
+
+	(c ? c : p)->focus();
 	restack(selmon);
 }
 
@@ -134,7 +136,7 @@ movemouse(const Arg *arg)
 			&& (abs(nx - c->x) > snap || abs(ny - c->y) > snap))
 				togglefloating(NULL);
 			if (!selmon->lt[selmon->sellt]->arrange || c->isfloating)
-				resize(c, nx, ny, c->w, c->h, 1);
+				c->resize(nx, ny, c->w, c->h, 1);
 			break;
 		}
 	} while (ev.type != ButtonRelease);
@@ -142,7 +144,7 @@ movemouse(const Arg *arg)
 	if ((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
 		sendmon(c, m);
 		selmon = m;
-		focus(NULL);
+        selmon->stack->focus();
 	}
 }
 
@@ -154,15 +156,15 @@ pushstack(const Arg *arg) {
 	if(i < 0 || !sel)
 		return;
 	else if(i == 0) {
-		detach(sel);
-		attach(sel);
+		sel->detach();
+		sel->attach();
 	}
 	else {
 		for(p = NULL, c = selmon->clients; c; p = c, c = c->next)
 			if(!(i -= (ISVISIBLE(c) && c != sel)))
 				break;
 		c = c ? c : p;
-		detach(sel);
+		sel->detach();
 		sel->next = c->next;
 		c->next = sel;
 	}
@@ -219,7 +221,7 @@ resizemouse(const Arg *arg)
 					togglefloating(NULL);
 			}
 			if (!selmon->lt[selmon->sellt]->arrange || c->isfloating)
-				resize(c, c->x, c->y, nw, nh, 1);
+				c->resize(c->x, c->y, nw, nh, 1);
 			break;
 		}
 	} while (ev.type != ButtonRelease);
@@ -229,7 +231,7 @@ resizemouse(const Arg *arg)
 	if ((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
 		sendmon(c, m);
 		selmon = m;
-		focus(NULL);
+        selmon->stack->focus();
 	}
 }
 
@@ -394,7 +396,7 @@ tag(const Arg *arg)
 {
 	if (selmon->sel && arg->ui & TAGMASK) {
 		selmon->sel->tags = arg->ui & TAGMASK;
-		focus(NULL);
+        selmon->stack->focus();
 		arrange(selmon);
 	}
 }
@@ -425,7 +427,7 @@ togglefloating(const Arg *arg)
 		return;
 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
 	if (selmon->sel->isfloating)
-		resize(selmon->sel, selmon->sel->x, selmon->sel->y,
+		selmon->sel->resize(selmon->sel->x, selmon->sel->y,
 			selmon->sel->w, selmon->sel->h, 0);
 	else
 		selmon->sel->isalwaysontop = 0; /* disabled, turn this off too */
@@ -470,7 +472,7 @@ void
 togglefullscr(const Arg *arg)
 {
   if(selmon->sel)
-    setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
+    selmon->sel->setfullscreen(!selmon->sel->isfullscreen);
 }
 
 void
@@ -495,11 +497,11 @@ togglescratch(const Arg *arg)
 		unsigned int newtagset = selmon->tagset[selmon->seltags] ^ scratchtag;
 		if (newtagset) {
 			selmon->tagset[selmon->seltags] = newtagset;
-			focus(NULL);
+            selmon->stack->focus();
 			arrange(selmon);
 		}
 		if (ISVISIBLE(c)) {
-			focus(c);
+			c->focus();
 			restack(selmon);
 		}
 	} else {
@@ -518,7 +520,7 @@ toggletag(const Arg *arg)
 	newtags = selmon->sel->tags ^ (arg->ui & TAGMASK);
 	if (newtags) {
 		selmon->sel->tags = newtags;
-		focus(NULL);
+        selmon->stack->focus();
 		arrange(selmon);
 	}
 }
@@ -530,7 +532,7 @@ toggleview(const Arg *arg)
 
 	if (newtagset) {
 		selmon->tagset[selmon->seltags] = newtagset;
-		focus(NULL);
+        selmon->stack->focus();
 		arrange(selmon);
 	}
 }
@@ -543,7 +545,7 @@ view(const Arg *arg)
 	selmon->seltags ^= 1; /* toggle sel tagset */
 	if (arg->ui & TAGMASK)
 		selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
-	focus(NULL);
+	selmon->stack->focus();
 	arrange(selmon);
 }
 
@@ -555,9 +557,9 @@ zoom(const Arg *arg)
 	if (!selmon->lt[selmon->sellt]->arrange
 	|| (selmon->sel && selmon->sel->isfloating))
 		return;
-	if (c == nexttiled(selmon->clients))
-		if (!c || !(c = nexttiled(c->next)))
+	if (c == selmon->clients->nexttiled())
+		if (!c || !(c = c->next->nexttiled()))
 			return;
-	pop(c);
+	c->pop();
 }
 
